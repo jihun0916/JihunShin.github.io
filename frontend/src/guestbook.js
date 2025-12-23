@@ -26,10 +26,11 @@ function nameToAnimal(name) {
 }
 
 // Get sprite position for animal index
+// CSS background-position with 500% size needs 25% steps (100/(5-1) = 25)
 function getSpritePosition(animalIndex) {
     const col = animalIndex % SPRITE_COLS;
     const row = Math.floor(animalIndex / SPRITE_COLS);
-    return { x: col * 20, y: row * 20 }; // percentage (100/5 = 20%)
+    return { x: col * 25, y: row * 25 }; // 0%, 25%, 50%, 75%, 100%
 }
 
 // Render footprints from Firestore data
