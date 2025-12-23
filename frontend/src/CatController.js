@@ -11,12 +11,15 @@ export async function loadCatModel(scene) {
     const mixer = new THREE.AnimationMixer(scene); // Temp mixer, will be re-attached to model
     const actions = {};
 
+    // Use Vite's BASE_URL for GitHub Pages compatibility
+    const baseUrl = import.meta.env.BASE_URL;
+
     // 1. Load Main Mesh
-    const model = await loader.loadAsync('/models/SK_Cat_PA.fbx');
+    const model = await loader.loadAsync(baseUrl + 'models/SK_Cat_PA.fbx');
 
     // Apply Texture
     const textureLoader = new THREE.TextureLoader();
-    const texture = await textureLoader.loadAsync('/textures/T_Cat_PA_Color.png');
+    const texture = await textureLoader.loadAsync(baseUrl + 'textures/T_Cat_PA_Color.png');
     texture.flipY = true; // FBX UVs often need this, check if needed
     texture.colorSpace = THREE.SRGBColorSpace;
 
@@ -89,12 +92,12 @@ export async function loadCatModel(scene) {
 
     // Load essential animations only
     await Promise.all([
-        loadAnim('Idle', '/anims/Cat_Idle.fbx'),
-        loadAnim('Walk_Forward', '/anims/Cat_Walk_Forward.fbx'),
-        loadAnim('Run_Forward', '/anims/Cat_Run_Forward.fbx'),
-        loadAnim('Sit', '/anims/Cat_Sit_01.fbx'),
-        loadAnim('Sleep', '/anims/Cat_Sleep_Loop.fbx'),
-        loadAnim('Jump', '/anims/Cat_Jump_Up_01.fbx')
+        loadAnim('Idle', baseUrl + 'anims/Cat_Idle.fbx'),
+        loadAnim('Walk_Forward', baseUrl + 'anims/Cat_Walk_Forward.fbx'),
+        loadAnim('Run_Forward', baseUrl + 'anims/Cat_Run_Forward.fbx'),
+        loadAnim('Sit', baseUrl + 'anims/Cat_Sit_01.fbx'),
+        loadAnim('Sleep', baseUrl + 'anims/Cat_Sleep_Loop.fbx'),
+        loadAnim('Jump', baseUrl + 'anims/Cat_Jump_Up_01.fbx')
     ]);
 
     // Return pivot as the main object to control, with model reference for animations
