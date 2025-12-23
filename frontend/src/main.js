@@ -7,6 +7,7 @@ import { loadCatModel } from './CatController.js';
 import { CatBrain } from './CatBrain.js';
 import { FootstepTracker } from './FootstepTracker.js';
 import { ClickFlash } from './ClickFlash.js';
+import { initGuestbook } from './guestbook.js';
 import * as THREE from 'three';
 
 let renderer, scene, camera, catObj, mixer, actions, brain, viewModeMgr, themeMgr, footstepTracker, clickFlash;
@@ -39,6 +40,9 @@ function init() {
 
         // Footstep visualization
         footstepTracker = new FootstepTracker(rawModel, catObj, scene);
+
+        // Initialize guestbook with Firebase
+        initGuestbook();
 
         animate();
     });
