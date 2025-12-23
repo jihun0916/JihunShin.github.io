@@ -9,5 +9,5 @@ export default defineConfig({
   // For GitHub Pages: 
   // - If using username.github.io, use base: '/'
   // - If using username.github.io/repo-name, use base: '/repo-name/'
-  base: '/',
+  base: '/JihunShin.github.io/',
 })
