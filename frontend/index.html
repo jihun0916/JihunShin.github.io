@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Jihun Shin - Personal Homepage</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #fafafa;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    [data-theme="dark"] body {
+      background: #0a0a0a;
+      color: #eee;
+    }
+
+    /* Canvas for 3D cat */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .nav-item {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      transform: scale(1.3);
+    }
+
+    .nav-item.active {
+      background: #333;
+      border-color: #333;
+    }
+
+    .nav-item::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .nav-item:hover::after {
+      opacity: 1;
+    }
+
+    [data-theme="dark"] .nav-item {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="dark"] .nav-item.active {
+      background: #fff;
+      border-color: #fff;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #333;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* Sections */
+    section {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .section-content {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    /* ========== ABOUT SECTION ========== */
+    #about {
+      background: linear-gradient(135deg, rgba(100, 200, 255, 0.05), rgba(200, 100, 255, 0.05));
+    }
+
+    .about-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Circular hover photo */
+    .about-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .about-photo .photo-hover {
+      opacity: 0;
+    }
+
+    .about-photo:hover .photo-default {
+      opacity: 0;
+    }
+
+    .about-photo:hover .photo-hover {
+      opacity: 1;
+    }
+
+    [data-theme="dark"] .about-photo {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .about-intro {
+      font-size: 1.3rem;
+      line-height: 1.8;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .about-link {
+      padding: 0.8rem 1.5rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .about-link:hover {
+      background: rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .about-link {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="dark"] .about-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ========== PUBLICATIONS SECTION ========== */
+    #publications {
+      background: linear-gradient(135deg, rgba(255, 200, 100, 0.05), rgba(255, 100, 100, 0.05));
+    }
+
+    .pub-scroll-container {
+      max-height: 450px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .pub-scroll-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .pub-scroll-container::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 3px;
+    }
+
+    .pub-scroll-container::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+    }
+
+    [data-theme="dark"] .pub-scroll-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="dark"] .pub-scroll-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .pub-card {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .pub-card:hover {
+      transform: translateX(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] .pub-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .pub-image {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .pub-info {
+      flex: 1;
+    }
+
+    .pub-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .pub-desc {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .pub-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pub-link {
+      padding: 0.3rem 0.7rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      text-decoration: none;
+      color: inherit;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .pub-link:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] .pub-link {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="dark"] .pub-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ========== ARTWORK SECTION ========== */
+    #artwork {
+      background: linear-gradient(135deg, rgba(100, 255, 150, 0.05), rgba(100, 200, 255, 0.05));
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      transition: all 0.3s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    [data-theme="dark"] .gallery-item {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* ========== BLOG SECTION (HIDDEN) ========== */
+    #blog {
+      display: none;
+      /* Hidden for now */
+      background: linear-gradient(135deg, rgba(255, 100, 200, 0.05), rgba(255, 200, 100, 0.05));
+    }
+
+    /* ========== GUESTBOOK SECTION ========== */
+    #guestbook {
+      background: linear-gradient(135deg, rgba(150, 255, 150, 0.05), rgba(100, 200, 150, 0.05));
+    }
+
+    .guestbook-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .guestbook-field {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      border: 1px dashed rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .guestbook-field {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .footprint {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .footprint:hover {
+      transform: scale(1.3);
+      z-index: 10;
+    }
+
+    .footprint img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footprint-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .footprint:hover .footprint-tooltip {
+      opacity: 1;
+    }
+
+    .guestbook-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .guestbook-form input,
+    .guestbook-form textarea {
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    [data-theme="dark"] .guestbook-form input,
+    [data-theme="dark"] .guestbook-form textarea {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #eee;
+    }
+
+    .guestbook-form textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .guestbook-form button {
+      padding: 0.8rem 1.5rem;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .guestbook-form button:hover {
+      background: #555;
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .guestbook-form button {
+      background: #fff;
+      color: #333;
+    }
+
+    .blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .blog-card {
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="dark"] .blog-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .blog-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-date {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+
+    .blog-excerpt {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      margin-top: 0.5rem;
+      line-height: 1.6;
+    }
+
+    /* ========== MODAL ========== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 1000px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 2rem;
+    }
+
+    [data-theme="dark"] .modal-content {
+      background: #1a1a1a;
+      color: #eee;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    [data-theme="dark"] .modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    [data-theme="dark"] .modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-image {
+      width: 100%;
+      max-height: 60vh;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-gallery-item {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.2s;
+    }
+
+    .modal-gallery-item:hover,
+    .modal-gallery-item.active {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .modal-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-date {
+      font-size: 0.85rem;
+      opacity: 0.5;
+      margin-bottom: 1rem;
+    }
+
+    .modal-text {
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#about" class="nav-item active" data-label="About"></a>
+    <a href="#publications" class="nav-item" data-label="Publications"></a>
+    <a href="#artwork" class="nav-item" data-label="Artwork"></a>
+    <a href="#guestbook" class="nav-item" data-label="Guestbook"></a>
+  </nav>
+
+  <!-- Theme Toggle -->
+  <button id="theme-toggle" class="theme-toggle">Toggle Theme</button>
+
+  <!-- ========== ABOUT SECTION ========== -->
+  <section id="about">
+    <h1 class="section-title">Jihun Shin</h1>
+    <div class="section-content">
+      <div class="about-container">
+        <!-- Hover photo -->
+        <div class="about-photo">
+          <img src="/images/profile1.png" class="photo-default" alt="Profile">
+          <img src="/images/profile2.jpg" class="photo-hover" alt="Profile Hover">
+        </div>
+        <p class="about-intro">
+          I am a <strong>PhD student</strong> at the <strong>KAIST Graduate School of Culture Technology</strong>,
+          advised by Professor <a href="https://lava.kaist.ac.kr/?page_id=41" target="_blank"
+            style="color: inherit; text-decoration: underline;">Sung-Hee Lee</a>.
+          I previously earned my Master's degree from the same department and hold a Bachelor’s degree in Oriental
+          Painting from Hongik University, where I also completed an extensive curriculum in Computer Science.
+          I have a profound interest in the <strong>technologies and human efforts dedicated to mutual
+            understanding</strong>. My
+          research areas include <strong>Computer Graphics, Telepresence, Digital Humans, and Virtual Spaces</strong>.
+          To ensure the
+          digital immortality of my beloved cat, <strong>'Chagomi'</strong>, I have made a space on my website where she
+          can roam freely.
+          <img src="/images/chagomi.jpg" alt="Chagomi"
+            style="width: 140px; height: 140px; border-radius: 50%; vertical-align: middle; margin-left: 4px;">
+        </p>
+        <div class="about-links">
+          <a href="https://scholar.google.com/citations?user=FA4zxqEAAAAJ&hl=ko" class="about-link">Google
+            Scholar</a>
+          <a href="https://www.linkedin.com/in/jihun-shin-959b44221/" class="about-link">LinkedIn</a>
+          <a href="mailto:jihun.shin@kaist.ac.kr" class="about-link">Email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PUBLICATIONS SECTION ========== -->
+  <section id="publications">
+    <h1 class="section-title">Publications</h1>
+    <div class="section-content">
+      <div class="pub-scroll-container">
+        <div class="pub-list">
+          <div class="pub-card">
+            <img src="/images/voronoi_teaser.png" class="pub-image" alt="Paper">
+            <div class="pub-info">
+              <div class="pub-title">Voronoi Rooms: Dynamic Visibility Modulation of Overlapping Spaces for Telepresence
+              </div>
+              <div class="pub-desc">Taehei Kim, <strong>Jihun Shin</strong>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang,
+                Sung-Hee Lee, <br>ACM Transactions on Graphics (2025)
+              </div>
+              <div class="pub-links">
+                <a href="https://dl.acm.org/doi/10.1145/3777900" class="pub-link">Paper</a>
+                <a href="https://hayleymol.github.io/VoronoiRooms_TOG/" class="pub-link">Project</a>
+                <a href="https://www.meta.com/ko-kr/experiences/parameterroom/24417022141334169/"
+                  class="pub-link">App</a>
+              </div>
+            </div>
+          </div>
+          <div class="pub-card">
+            <img src="/images/teaser_figure_v9.png" class="pub-image" alt="Paper">
+            <div class="pub-info">
+              <div class="pub-title">Situated Embodied XR Agents via Spatial Reasoning and Prompting</div>
+              <div class="pub-desc"><strong>Jihun Shin</strong>, Jihun Shin,
+                Hyeonjin Kim,
+                Eunseong Lee,
+                Donghwan Shin,
+                Kwang Bin Lee,
+                Taehei Kim,
+                Hyeshim Kim,
+                Joonsik An,
+                Sung-Hee Lee, <br>2025 IEEE International Symposium on Mixed and Augmented Reality Adjunct
+                (ISMAR-Adjunct) Demo </div>
+              <div class="pub-links">
+                <a href="https://www.computer.org/csdl/proceedings-article/ismar-adjunct/2025/934700a933/2bKcIgQdXSE"
+                  class="pub-link">Paper</a>
+              </div>
+            </div>
+          </div>
+          <div class="pub-card">
+            <img src="/images/teaser.png" class="pub-image" alt="Paper">
+            <div class="pub-info">
+              <div class="pub-title">Visibility Modulation of Aligned Spaces for Multi-User Telepresence</div>
+              <div class="pub-desc">Taehei Kim, <strong>Jihun Shin</strong>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang,
+                Sung-Hee Lee, <br>2024 IEEE International Symposium on Mixed and Augmented Reality Adjunct
+                (ISMAR-Adjunct) Demo <strong>(Honorable Mention)</strong>
+              </div>
+              <div class="pub-links">
+                <a href="https://ieeexplore.ieee.org/document/10765243" class="pub-link">Paper</a>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="pub-card">
+            <img src="/images/pub4.jpg" class="pub-image" alt="Paper">
+            <div class="pub-info">
+              <div class="pub-title">[Paper Title 4]</div>
+              <div class="pub-desc">[Brief description of the paper...]</div>
+              <div class="pub-links">
+                <a href="#" class="pub-link">Paper</a>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ARTWORK SECTION ========== -->
+  <section id="artwork">
+    <h1 class="section-title">Artwork</h1>
+    <div class="section-content">
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openModal('artwork', 0)"><img src="/images/painting1.png"
+            alt="Tail Thief: On-Site Verification">
+        </div>
+        <div class="gallery-item" onclick="openModal('artwork', 1)"><img src="/images/needle theif.png"
+            alt="Tail Thief: Needle Theif"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 2)"><img src="/images/Calf Thief.png"
+            alt="Tail Thief: Calf Thief"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 3)"><img src="/images/tail theif.png"
+            alt="Tail Thief: Calf Thief"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 4)"><img src="/images/masterball.png" alt="Master Ball">
+        </div>
+        <div class="gallery-item" onclick="openModal('artwork', 5)"><img src="/images/Unauthorized Entry.png"
+            alt="Unauthorized Entry"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 6)"><img src="/images/Island of Fragments.png"
+            alt="Island of Fragments"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 7)"><img src="/images/Cyber Revenant.png"
+            alt="Cyber Revenant"></div>
+        <div class="gallery-item" onclick="openModal('artwork', 8)"><img src="/images/Hole in.png" alt="Hole in"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GUESTBOOK SECTION ========== -->
+  <section id="guestbook">
+    <h1 class="section-title">Guestbook</h1>
+    <div class="section-content">
+      <div class="guestbook-container">
+        <p style="text-align: center; opacity: 0.7; margin-bottom: 1rem;">
+          Leave your footprint! Your name will be transformed into a unique animal footprint. 🐾
+        </p>
+
+        <!-- Footprint Field -->
+        <div id="footprint-field" class="guestbook-field">
+          <!-- Footprints will be rendered here -->
+        </div>
+
+        <!-- Input Form -->
+        <form class="guestbook-form" id="guestbook-form">
+          <input type="text" id="guest-name" placeholder="Your name" required maxlength="30">
+          <textarea id="guest-message" placeholder="Leave a short message..." required maxlength="100"></textarea>
+          <button type="submit">Leave Footprint 🐾</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOG SECTION ========== -->
+  <section id="blog">
+    <h1 class="section-title">Blog</h1>
+    <div class="section-content">
+      <div class="blog-list">
+        <div class="blog-card" onclick="openModal('blog', 0)">
+          <div class="blog-title">[Post Title 1]</div>
+          <div class="blog-date">December 2024</div>
+          <p class="blog-excerpt">[Short excerpt of the post...]</p>
+        </div>
+        <div class="blog-card" onclick="openModal('blog', 1)">
+          <div class="blog-title">[Post Title 2]</div>
+          <div class="blog-date">November 2024</div>
+          <p class="blog-excerpt">[Short excerpt of the post...]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MODAL ========== -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img id="modal-image" class="modal-image" style="display:none;">
+      <div id="modal-gallery" class="modal-gallery"></div>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <div id="modal-date" class="modal-date"></div>
+      <p id="modal-text" class="modal-text"></p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+
+  <script>
+    // Navigation active state
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('section');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === '#' + current) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Modal data (placeholder - replace with real data)
+    // For artwork: use 'images' array for multiple detail shots
+    const modalData = {
+      artwork: [
+        {
+          images: ['/images/painting1.png', '/images/tail_thief_detail1 (1).png', '/images/tail_thief_detail1 (2).png', '/images/tail_thief_detail1 (3).png', '/images/tail_thief_detail1 (4).png'],
+          title: 'Tail Thief: On-Site Verification',
+          text: 'Jihun Shin, Tail Thief: On-Site Verification, 2021, 160.5 x 130.3 cm, Ink on multi-layered Hanji (traditional Korean paper)'
+        },
+        { images: ['/images/needle theif.png'], title: 'Tail Thief: Needle Thief', text: 'Jihun Shin, Tail Thief: Needle Thief, 2021, 72.7 x 60.6 cm, Ink on multi-layered Hanji (traditional Korean paper)' },
+        { images: ['/images/Calf Thief.png'], title: 'Tail Thief: Calf Thief', text: 'Jihun Shin, Tail Thief: Calf Thief, 2021, 60.6 x 72.7 cm, Ink on multi-layered Hanji (traditional Korean paper)' },
+        { images: ['/images/tail theif.png'], title: 'Tail Thief', text: 'Jihun Shin, Tail Thief, 2021, Interactive Media', link: 'https://www.youtube.com/watch?v=Rm3ewbz_sq0&feature=youtu.be' },
+        { images: ['/images/masterball.png'], title: 'MasterBall', text: 'Jihun Shin, Master Ball, 2021, Interactive Media / VR' },
+        { images: ['/images/Unauthorized Entry.png'], title: 'Unauthorized Entry', text: 'Jihun Shin, Unauthorized Entry, 2021, 53.0 x 40.9 cm, Ink on multi-layered Hanji (traditional Korean paper)' },
+        { images: ['/images/Island of Fragments.png'], title: 'Island of Fragments', text: 'Jihun Shin, Island of Fragments, 2021, 117.0 x 73.0 cm, Ink on multi-layered Hanji (traditional Korean paper)' },
+        { images: ['/images/Cyber Revenant.png'], title: 'Cyber Revenant', text: 'Jihun Shin, Cyber Revenant, 2021, 160.5 x 130.3 cm, Ink on multi-layered Hanji (traditional Korean paper)' },
+        { images: ['/images/Hole in.png'], title: 'Hole in', text: 'Jihun Shin, Hole in, 2020, 100.0 x 80.3 cm, Mixed media on Jangji (traditional Korean paper)' },
+      ],
+      blog: [
+        { title: 'My First Website!', date: 'December 2025', text: 'Full content of blog post 1...' },
+        { title: 'Artwork 2', date: 'November 2024', text: 'Full content of blog post 2...' },
+      ]
+    };
+
+    function openModal(type, index) {
+      const data = modalData[type][index];
+      const modal = document.getElementById('modal');
+      const modalImage = document.getElementById('modal-image');
+      const modalGallery = document.getElementById('modal-gallery');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDate = document.getElementById('modal-date');
+      const modalText = document.getElementById('modal-text');
+
+      // Clear gallery
+      modalGallery.innerHTML = '';
+
+      // Handle multiple images (artwork) or single image
+      const images = data.images || (data.image ? [data.image] : []);
+
+      if (images.length > 0) {
+        // Show first image as main
+        modalImage.src = images[0];
+        modalImage.style.display = 'block';
+
+        // Create gallery thumbnails if multiple images
+        if (images.length > 1) {
+          images.forEach((img, i) => {
+            const thumb = document.createElement('div');
+            thumb.className = 'modal-gallery-item' + (i === 0 ? ' active' : '');
+            thumb.innerHTML = `<img src="${img}" alt="Detail ${i + 1}">`;
+            thumb.onclick = () => {
+              modalImage.src = img;
+              document.querySelectorAll('.modal-gallery-item').forEach(t => t.classList.remove('active'));
+              thumb.classList.add('active');
+            };
+            modalGallery.appendChild(thumb);
+          });
+        }
+      } else {
+        modalImage.style.display = 'none';
+      }
+
+      modalTitle.textContent = data.title || '';
+      modalDate.textContent = data.date || '';
+      modalText.innerHTML = data.text || '';
+
+      // Add link if exists
+      if (data.link) {
+        modalText.innerHTML += `<br><br><a href="${data.link}" target="_blank" style="color: #4a9eff; text-decoration: underline;">▶ Watch Video</a>`;
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(event) {
+      if (event && event.target !== document.getElementById('modal')) return;
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ========== GUESTBOOK ==========
+    // Sprite sheet: 5x5 grid = 25 footprints
+    const FOOTPRINT_SPRITE = '/images/footprints.png';
+    const SPRITE_COLS = 5;
+    const SPRITE_ROWS = 5;
+    const TOTAL_ANIMALS = SPRITE_COLS * SPRITE_ROWS; // 25
+
+    // Animal names for the 25 footprints (optional, for fun)
+    const animalNames = [
+      'cat', 'dog', 'rabbit', 'bear', 'bird',
+      'fox', 'deer', 'mouse', 'wolf', 'raccoon',
+      'squirrel', 'hedgehog', 'otter', 'badger', 'beaver',
+      'moose', 'elk', 'lynx', 'panda', 'koala',
+      'tiger', 'lion', 'monkey', 'elephant', 'giraffe'
+    ];
+
+    // Simple hash function: name -> animal index (0-24)
+    function nameToAnimal(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = ((hash << 5) - hash) + name.charCodeAt(i);
+        hash = hash & hash;
+      }
+      return Math.abs(hash) % TOTAL_ANIMALS;
+    }
+
+    // Get sprite position for animal index
+    function getSpritePosition(animalIndex) {
+      const col = animalIndex % SPRITE_COLS;
+      const row = Math.floor(animalIndex / SPRITE_COLS);
+      return { x: col * 20, y: row * 20 }; // percentage (100/5 = 20%)
+    }
+
+    // Load entries from localStorage
+    function loadGuestbookEntries() {
+      const data = localStorage.getItem('guestbook');
+      return data ? JSON.parse(data) : [];
+    }
+
+    // Save entries to localStorage
+    function saveGuestbookEntries(entries) {
+      localStorage.setItem('guestbook', JSON.stringify(entries));
+    }
+
+    // Render footprints in field
+    function renderFootprints() {
+      const field = document.getElementById('footprint-field');
+      if (!field) return;
+
+      field.innerHTML = '';
+      const entries = loadGuestbookEntries();
+      const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+
+      entries.forEach((entry, index) => {
+        const spritePos = getSpritePosition(entry.animal);
+        const animalName = animalNames[entry.animal] || 'unknown';
+
+        const footprint = document.createElement('div');
+        footprint.className = 'footprint';
+        footprint.style.left = entry.x + '%';
+        footprint.style.top = entry.y + '%';
+        footprint.style.transform = `rotate(${entry.rotation || 0}deg)`;
+        footprint.style.backgroundImage = `url('${FOOTPRINT_SPRITE}')`;
+        footprint.style.backgroundSize = '500% 500%';
+        footprint.style.backgroundPosition = `${spritePos.x}% ${spritePos.y}%`;
+
+        // Tooltip: message only (or name + message in admin mode)
+        const tooltipText = isAdmin
+          ? `[${entry.name}] ${entry.message}`
+          : entry.message;
+
+        footprint.innerHTML = `<div class="footprint-tooltip">${tooltipText}</div>`;
+
+        field.appendChild(footprint);
+      });
+    }
+
+    // Handle form submission
+    document.getElementById('guestbook-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nameInput = document.getElementById('guest-name');
+      const messageInput = document.getElementById('guest-message');
+
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!name || !message) return;
+
+      const entries = loadGuestbookEntries();
+      const newEntry = {
+        name: name,
+        animal: nameToAnimal(name),
+        message: message,
+        timestamp: Date.now(),
+        x: 10 + Math.random() * 80, // 10-90% horizontal
+        y: 10 + Math.random() * 80, // 10-90% vertical
+        rotation: -30 + Math.random() * 60 // -30 to +30 degrees
+      };
+
+      entries.push(newEntry);
+      saveGuestbookEntries(entries);
+
+      // Clear form
+      nameInput.value = '';
+      messageInput.value = '';
+
+      // Re-render
+      renderFootprints();
+
+      alert('Your footprint has been left! 🐾');
+    });
+
+    // Initial render
+    renderFootprints();
+  </script>
+</body>
+
+</html>
