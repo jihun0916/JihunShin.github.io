@@ -32,9 +32,10 @@ export class FootstepTracker {
             this.pawGoingDown[key] = true;
         });
 
-        // Load footprint texture
+        // Load footprint texture (use BASE_URL for GitHub Pages)
+        const baseUrl = import.meta.env.BASE_URL;
         const textureLoader = new THREE.TextureLoader();
-        this.footprintTexture = textureLoader.load('/cat_footprint.png');
+        this.footprintTexture = textureLoader.load(baseUrl + 'cat_footprint.png');
 
         // Create footprint geometry
         this.footprintGeometry = new THREE.PlaneGeometry(0.06, 0.06);
