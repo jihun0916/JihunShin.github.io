@@ -8,6 +8,8 @@ import { CatBrain } from './CatBrain.js';
 import { FootstepTracker } from './FootstepTracker.js';
 import { ClickFlash } from './ClickFlash.js';
 import { initGuestbook } from './guestbook.js';
+import { initAuth } from './auth.js';
+import { initResearch } from './research-main.js';
 import * as THREE from 'three';
 
 let renderer, scene, camera, catObj, mixer, actions, brain, viewModeMgr, themeMgr, footstepTracker, clickFlash;
@@ -15,6 +17,12 @@ let targetPos = { x: 0, y: 0, z: 0 };
 let cameraScrollZ = 0; // Camera Z offset from scroll
 
 function init() {
+    // Initialize Firebase Authentication
+    initAuth();
+
+    // Initialize Research section
+    initResearch();
+
     const canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
     const { renderer: r, scene: s, camera: c } = initWorld(canvas);
