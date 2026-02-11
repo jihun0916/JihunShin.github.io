@@ -2,7 +2,7 @@
 import { subscribeToPapers, addPaper, updatePaper, deletePaper, searchPapers } from './papers-service.js';
 import { fetchPaperAuto, fetchPaperByDOI } from './paper-autofill.js';
 import { generateRelatedWork, saveRelatedWork } from './relatedwork-service.js';
-import { ollamaClient } from './ollama-client.js';
+import { ollamaClient } from './llm-client.js';
 import { config } from './research-config.js';
 import { parseBibtex } from './bibtex-parser.js';
 
@@ -676,7 +676,7 @@ CRITICAL REQUIREMENTS:
 
 Output ONLY the JSON array of indices, nothing else:`;
 
-    const result = await ollamaClient.generate(prompt, config.ollama.models.keywords, {
+    const result = await ollamaClient.generate(prompt, config.llm.models.keywords, {
       temperature: 0.3,
       top_p: 0.9
     });
@@ -875,7 +875,7 @@ ${englishText}
 
 Korean translation:`;
 
-      finalKoreanText = await ollamaClient.generate(prompt, config.ollama.models.translation, {
+      finalKoreanText = await ollamaClient.generate(prompt, config.llm.models.translation, {
         temperature: 0.3,
         top_p: 0.9
       });
@@ -928,7 +928,7 @@ ${currentKorean}
 
 Formal academic English translation:`;
 
-      const updatedEnglish = await ollamaClient.generate(prompt, config.ollama.models.translation, {
+      const updatedEnglish = await ollamaClient.generate(prompt, config.llm.models.translation, {
         temperature: 0.3,
         top_p: 0.9
       });

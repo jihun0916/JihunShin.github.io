@@ -2093,151 +2093,57 @@
           <!-- Settings Tab -->
           <div id="settings-tab" class="research-tab" style="display: none;">
             <div class="settings-container">
-              <h3>⚙️ 원격 접속 설정</h3>
+              <h3>⚙️ AI 설정 (Claude API)</h3>
               <p class="settings-description">
-                학교/작업용 컴퓨터에서 집 컴퓨터의 Ollama에 접속하세요. <strong>작업 컴퓨터에는 설치 불필요!</strong>
+                Anthropic Claude API를 사용합니다. API 키만 설정하면 <strong>어디서든</strong> 사용 가능!
               </p>
 
-              <div class="settings-section">
-                <h4>🔗 현재 Ollama 설정</h4>
+              <div class="settings-section" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);">
+                <h4>🔑 Claude API 설정</h4>
                 <div class="settings-info">
-                  <label>Ollama URL:</label>
-                  <input type="text" id="ollama-url-input" placeholder="https://xxxxx.trycloudflare.com" class="settings-input">
-                  <button id="save-ollama-url" class="action-btn btn-success">저장</button>
-                  <button id="test-ollama-connection" class="action-btn btn-info">연결 테스트</button>
+                  <label>API Key:</label>
+                  <input type="password" id="claude-api-key-input" placeholder="sk-ant-api03-..." class="settings-input" style="font-family: monospace;">
+                  <button id="save-api-key" class="action-btn btn-success">저장</button>
+                  <button id="test-api-connection" class="action-btn btn-info">연결 테스트</button>
                 </div>
                 <div id="connection-status" class="connection-status"></div>
+
+                <div style="margin-top: 1rem;">
+                  <label>모델 선택:</label>
+                  <select id="claude-model-select" class="settings-input" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ddd; width: auto;">
+                    <option value="claude-sonnet-4-20250514">Claude Sonnet 4 (추천 - 균형)</option>
+                    <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (빠르고 저렴)</option>
+                    <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (고품질)</option>
+                  </select>
+                </div>
               </div>
 
-              <div class="settings-section" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);">
-                <h4>✨ 방법 1: Cloudflare Tunnel (추천 - 설치 불필요!)</h4>
-                <p style="opacity: 0.9; margin-bottom: 1rem; line-height: 1.6;">
-                  <strong>집 컴퓨터에만</strong> 설정하면 학교/작업 컴퓨터에서 브라우저로 바로 사용 가능!
-                </p>
-
-                <div style="background: rgba(255, 255, 255, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                  <strong>📋 집 컴퓨터 설정 (5분 소요):</strong>
-                  <ol style="margin-top: 0.5rem; margin-left: 1.5rem; line-height: 1.8;">
-                    <li>PowerShell을 <strong>관리자 권한</strong>으로 실행</li>
-                    <li><code>setup-cloudflare-tunnel.ps1</code> 스크립트 실행</li>
-                    <li>나오는 URL 복사 (예: <code>https://abc-xyz.trycloudflare.com</code>)</li>
-                  </ol>
-                </div>
-
-                <div style="background: rgba(255, 255, 255, 0.5); padding: 1rem; border-radius: 8px;">
-                  <strong>💻 학교/작업 컴퓨터 (설치 불필요):</strong>
-                  <ol style="margin-top: 0.5rem; margin-left: 1.5rem; line-height: 1.8;">
-                    <li>이 페이지 접속 (GitHub Pages 또는 로컬)</li>
-                    <li>위 입력창에 Cloudflare URL 붙여넣기</li>
-                    <li>"저장" → "연결 테스트" 클릭</li>
-                    <li>✅ 모든 기능 사용 가능!</li>
-                  </ol>
-                </div>
-
+              <div class="settings-section">
+                <h4>📋 API 키 발급 방법</h4>
+                <ol style="margin-left: 1.5rem; line-height: 2;">
+                  <li><a href="https://console.anthropic.com/" target="_blank" style="color: #667eea;">console.anthropic.com</a> 접속 및 회원가입</li>
+                  <li>좌측 메뉴 → <strong>API Keys</strong> 클릭</li>
+                  <li><strong>Create Key</strong> 버튼 클릭 → 키 복사</li>
+                  <li>위 입력창에 붙여넣기 → <strong>저장</strong></li>
+                </ol>
                 <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(78, 205, 196, 0.2); border-left: 3px solid #4ecdc4; border-radius: 4px;">
-                  <strong>💡 장점:</strong> 학교 컴퓨터에 아무것도 설치 안 함, HTTPS 자동, 학교 방화벽 우회
+                  <strong>💡 비용:</strong> Claude Sonnet 4 기준 입력 $3/100만 토큰, 출력 $15/100만 토큰. 논문 번역 1회 약 $0.01~0.05 수준.
                 </div>
               </div>
 
               <div class="settings-section">
-                <h4>📖 Cloudflare Tunnel 상세 가이드</h4>
-
-                <details style="margin-bottom: 1rem;">
-                  <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 6px;">
-                    자동 스크립트 사용법 (권장) 👈
-                  </summary>
-                  <div style="margin-top: 1rem; line-height: 1.8;">
-                    <p><strong>1. 스크립트 실행:</strong></p>
-                    <pre style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 6px; overflow-x: auto;"><code># PowerShell (관리자 권한)에서:
-cd C:\Users\신지훈\Desktop\homepage
-.\setup-cloudflare-tunnel.ps1</code></pre>
-
-                    <p style="margin-top: 1rem;"><strong>2. URL 복사:</strong></p>
-                    <p style="margin-left: 1rem;">새 창에 표시되는 URL 복사 (예: <code>https://abc-xyz.trycloudflare.com</code>)</p>
-
-                    <p style="margin-top: 1rem;"><strong>3. 완료!</strong></p>
-                    <p style="margin-left: 1rem;">스크립트가 자동으로:</p>
-                    <ul style="margin-left: 2rem;">
-                      <li>cloudflared 다운로드</li>
-                      <li>Ollama CORS 설정</li>
-                      <li>터널 시작</li>
-                    </ul>
-                  </div>
-                </details>
-
-                <details style="margin-bottom: 1rem;">
-                  <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 6px;">
-                    수동 설정 (고급 사용자)
-                  </summary>
-                  <div style="margin-top: 1rem; line-height: 1.8;">
-                    <p><strong>1. cloudflared 다운로드:</strong></p>
-                    <pre style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 6px; overflow-x: auto;"><code>Invoke-WebRequest -Uri "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe" -OutFile "C:\cloudflared.exe"</code></pre>
-
-                    <p style="margin-top: 1rem;"><strong>2. CORS 설정:</strong></p>
-                    <pre style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 6px; overflow-x: auto;"><code>[System.Environment]::SetEnvironmentVariable('OLLAMA_ORIGINS', 'https://*.trycloudflare.com,https://*.github.io', 'Machine')
-taskkill /F /IM ollama.exe
-ollama serve</code></pre>
-
-                    <p style="margin-top: 1rem;"><strong>3. 터널 시작:</strong></p>
-                    <pre style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 6px; overflow-x: auto;"><code>C:\cloudflared.exe tunnel --url http://localhost:11434</code></pre>
-                  </div>
-                </details>
-              </div>
-
-              <div class="settings-section">
-                <h4>🔄 방법 2: Tailscale (양쪽 다 설치 필요)</h4>
-                <p style="opacity: 0.8; margin-bottom: 1rem;">학교 컴퓨터에도 설치 권한이 있다면 이 방법도 가능합니다.</p>
-
-                <details>
-                  <summary style="cursor: pointer; font-weight: 600; padding: 0.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 6px;">
-                    Tailscale 설정 가이드
-                  </summary>
-                  <div style="margin-top: 1rem;">
-                    <ol class="setup-guide">
-                      <li>
-                        <strong>양쪽 컴퓨터에 Tailscale 설치</strong>
-                        <ul>
-                          <li><a href="https://tailscale.com/download" target="_blank">Tailscale 다운로드</a></li>
-                          <li>같은 계정으로 로그인</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <strong>집 컴퓨터 IP 확인</strong>
-                        <ul>
-                          <li>PowerShell: <code>tailscale ip -4</code></li>
-                          <li>예시: <code>100.x.x.x</code></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <strong>CORS 설정</strong>
-                        <ul>
-                          <li><code>[System.Environment]::SetEnvironmentVariable('OLLAMA_ORIGINS', 'http://100.*.*.*:*,https://*.github.io', 'Machine')</code></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <strong>작업 컴퓨터에서 사용</strong>
-                        <ul>
-                          <li>위 입력창에 <code>http://100.x.x.x:11434</code> 입력</li>
-                        </ul>
-                      </li>
-                    </ol>
-                  </div>
-                </details>
-              </div>
-
-              <div class="settings-section">
-                <h4>💡 팁</h4>
+                <h4>✅ 장점</h4>
                 <ul class="tips-list">
-                  <li><strong>Cloudflare 추천 이유:</strong> 학교 컴퓨터에 설치 불필요, HTTPS 자동, 방화벽 우회</li>
-                  <li><strong>URL 유지:</strong> Quick Tunnel은 재시작마다 URL 변경됨 (영구 터널 설정 시 고정)</li>
-                  <li><strong>GitHub Pages:</strong> 어디서나 <code>https://yourusername.github.io/homepage?research=true</code> 접속</li>
-                  <li><strong>집 컴퓨터:</strong> 항상 켜두거나 WakeOnLAN 설정 권장</li>
+                  <li><strong>어디서든 접속:</strong> 로그인만 하면 집, 학교, 카페 어디서든 사용 가능</li>
+                  <li><strong>설치 불필요:</strong> 터널, Ollama, GPU 전혀 필요 없음</li>
+                  <li><strong>고품질:</strong> Claude Sonnet 4 → 학술 번역/작문 최고 수준</li>
+                  <li><strong>API 키 보안:</strong> 키는 브라우저 localStorage에만 저장 (서버 전송 없음)</li>
                 </ul>
               </div>
 
               <div class="settings-section">
                 <h4>🔧 고급 설정</h4>
-                <button id="clear-ollama-url" class="action-btn btn-danger">URL 초기화 (localhost로 되돌림)</button>
+                <button id="clear-api-key" class="action-btn btn-danger">API 키 삭제</button>
               </div>
             </div>
           </div>
@@ -2467,7 +2373,7 @@ doi:10.1145/3567890.3567891
       <div style="margin-bottom: 1.5rem;">
         <p style="opacity: 0.8; line-height: 1.6;">
           선택한 논문들을 바탕으로 학술적인 Related Work 섹션을 자동으로 생성합니다.
-          Ollama <code>deepseek-r1:14b</code> 모델을 사용합니다.
+          Claude <code>Sonnet 4</code> 모델을 사용합니다.
         </p>
       </div>
 

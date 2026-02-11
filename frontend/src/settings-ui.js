@@ -1,94 +1,101 @@
-// Settings UI Controller
+// Settings UI Controller - Claude API
 import { config } from './research-config.js';
+import { ollamaClient } from './llm-client.js';
 
 /**
  * Initialize Settings Tab
  */
 export function initSettingsUI() {
-  const urlInput = document.getElementById('ollama-url-input');
-  const saveBtn = document.getElementById('save-ollama-url');
-  const testBtn = document.getElementById('test-ollama-connection');
-  const clearBtn = document.getElementById('clear-ollama-url');
+  const apiKeyInput = document.getElementById('claude-api-key-input');
+  const saveBtn = document.getElementById('save-api-key');
+  const testBtn = document.getElementById('test-api-connection');
+  const clearBtn = document.getElementById('clear-api-key');
   const statusDiv = document.getElementById('connection-status');
+  const modelSelect = document.getElementById('claude-model-select');
 
-  // Load saved URL on init
-  loadSavedURL();
+  // Load saved settings on init
+  loadSavedSettings();
 
-  // Save URL
+  // Save API Key
   saveBtn.addEventListener('click', () => {
-    const url = urlInput.value.trim();
+    const apiKey = apiKeyInput.value.trim();
 
-    if (!url) {
-      showStatus('error', 'URL을 입력해주세요.');
+    if (!apiKey) {
+      showStatus('error', 'API 키를 입력해주세요.');
       return;
     }
 
-    // Validate URL format
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      showStatus('error', 'URL은 http:// 또는 https://로 시작해야 합니다.');
+    if (!apiKey.startsWith('sk-ant-')) {
+      showStatus('error', 'Anthropic API 키는 sk-ant-로 시작합니다. 키를 확인해주세요.');
       return;
     }
 
     // Save to localStorage
-    localStorage.setItem('ollama_url', url);
-    showStatus('success', `✅ URL 저장됨: ${url}`);
+    localStorage.setItem('claude_api_key', apiKey);
+    showStatus('success', `✅ API 키 저장됨 (${apiKey.substring(0, 12)}...)`);
 
-    console.log('Ollama URL saved:', url);
+    console.log('Claude API key saved');
   });
+
+  // Save model selection
+  if (modelSelect) {
+    modelSelect.addEventListener('change', () => {
+      const model = modelSelect.value;
+      localStorage.setItem('claude_model', model);
+      showStatus('success', `✅ 모델 변경됨: ${model}`);
+    });
+  }
 
   // Test connection
   testBtn.addEventListener('click', async () => {
-    const url = urlInput.value.trim() || config.ollama.baseUrl;
+    const apiKey = apiKeyInput.value.trim() || localStorage.getItem('claude_api_key');
 
-    showStatus('success', '🔄 연결 테스트 중...');
+    if (!apiKey) {
+      showStatus('error', '❌ API 키를 먼저 입력해주세요.');
+      return;
+    }
+
+    // Temporarily save for testing
+    localStorage.setItem('claude_api_key', apiKey);
+    showStatus('success', '🔄 Claude API 연결 테스트 중...');
 
     try {
-      const response = await fetch(`${url}/api/tags`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const available = await ollamaClient.isAvailable();
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      const modelCount = data.models?.length || 0;
-
-      showStatus('success', `✅ 연결 성공! (${modelCount}개 모델 발견)`);
-
-      // Show available models
-      if (modelCount > 0) {
-        const modelNames = data.models.map(m => m.name).join(', ');
-        console.log('Available models:', modelNames);
+      if (available) {
+        showStatus('success', `✅ Claude API 연결 성공! 모델: ${config.llm.defaultModel}`);
+      } else {
+        showStatus('error', '❌ 연결 실패: API 키를 확인해주세요.');
       }
     } catch (error) {
-      showStatus('error', `❌ 연결 실패: ${error.message}\n\nCORS 설정과 Ollama 실행 상태를 확인하세요.`);
+      showStatus('error', `❌ 연결 실패: ${error.message}`);
       console.error('Connection test failed:', error);
     }
   });
 
-  // Clear URL (reset to localhost)
+  // Clear API key
   clearBtn.addEventListener('click', () => {
-    if (confirm('Ollama URL을 localhost로 초기화하시겠습니까?')) {
-      localStorage.removeItem('ollama_url');
-      urlInput.value = 'http://localhost:11434';
-      showStatus('success', '✅ URL이 localhost로 초기화되었습니다.');
-      console.log('Ollama URL cleared');
+    if (confirm('Claude API 키를 삭제하시겠습니까?')) {
+      localStorage.removeItem('claude_api_key');
+      localStorage.removeItem('claude_model');
+      apiKeyInput.value = '';
+      showStatus('success', '✅ API 키가 삭제되었습니다.');
+      console.log('Claude API key cleared');
     }
   });
 
   /**
-   * Load saved URL from localStorage
+   * Load saved settings from localStorage
    */
-  function loadSavedURL() {
-    const savedUrl = localStorage.getItem('ollama_url');
-    if (savedUrl) {
-      urlInput.value = savedUrl;
-    } else {
-      urlInput.value = 'http://localhost:11434';
+  function loadSavedSettings() {
+    const savedKey = localStorage.getItem('claude_api_key');
+    if (savedKey && apiKeyInput) {
+      apiKeyInput.value = savedKey;
+    }
+
+    const savedModel = localStorage.getItem('claude_model');
+    if (savedModel && modelSelect) {
+      modelSelect.value = savedModel;
     }
   }
 

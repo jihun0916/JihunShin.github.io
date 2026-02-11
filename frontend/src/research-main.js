@@ -109,7 +109,7 @@ function initTabs() {
  */
 function initTranslationTab() {
   const modelInfo = document.getElementById('translation-model');
-  modelInfo.textContent = config.ollama.enabled
-    ? `(Model: ${config.ollama.models.translation})`
-    : '(Ollama unavailable - local environment only)';
+  modelInfo.textContent = config.llm.enabled
+    ? `(Model: ${config.llm.models.translation})`
+    : '(Claude API key not set - go to Settings tab)';
 }

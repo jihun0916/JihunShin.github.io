@@ -1,5 +1,5 @@
 // Translation service using Ollama
-import { ollamaClient } from './ollama-client.js';
+import { ollamaClient } from './llm-client.js';
 import { config } from './research-config.js';
 import { db } from './firebase.js';
 import { collection, addDoc } from 'firebase/firestore';
@@ -16,7 +16,7 @@ export async function translateToEnglish(koreanText, onChunk = null) {
     throw new Error('Korean text is required');
   }
 
-  const model = config.ollama.models.translation;
+  const model = config.llm.models.translation;
 
   const prompt = `You are a professional academic translator specializing in computer science research papers. Translate the following Korean text into formal, precise English suitable for top-tier academic publications (ACM, IEEE).
 
@@ -71,7 +71,7 @@ export async function saveTranslation(textKo, textEn) {
   const docRef = await addDoc(translationsCollection, {
     textKo,
     textEn,
-    model: config.ollama.models.translation,
+    model: config.llm.models.translation,
     timestamp: Date.now(),
     userId
   });

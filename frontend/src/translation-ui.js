@@ -16,8 +16,8 @@ export function initTranslationUI() {
   const outputDiv = document.getElementById('translate-output');
 
   // Check if Ollama is enabled
-  if (!config.ollama.enabled) {
-    outputDiv.textContent = '번역 기능은 로컬 환경에서만 사용 가능합니다.\n\nOllama를 설치하고 CORS 설정을 완료해주세요.';
+  if (!config.llm.enabled) {
+    outputDiv.textContent = 'Claude API 키가 설정되지 않았습니다.\n\n설정 탭에서 API 키를 입력해주세요.';
     translateBtn.disabled = true;
     return;
   }

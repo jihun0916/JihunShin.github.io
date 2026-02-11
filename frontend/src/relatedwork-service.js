@@ -1,5 +1,5 @@
 // Related Work generation service using Ollama
-import { ollamaClient } from './ollama-client.js';
+import { ollamaClient } from './llm-client.js';
 import { config } from './research-config.js';
 import { db } from './firebase.js';
 import { collection, addDoc, getDocs, query, where, orderBy, limit as firestoreLimit } from 'firebase/firestore';
@@ -17,7 +17,7 @@ export async function generateRelatedWork(papers, onChunk = null, introduction =
     throw new Error('논문을 선택해주세요.');
   }
 
-  const model = config.ollama.models.relatedWork;
+  const model = config.llm.models.relatedWork;
 
   // Generate BibTeX keys for each paper
   const paperWithKeys = papers.map(paper => {
@@ -122,7 +122,7 @@ export async function saveRelatedWork(title, content, paperIds) {
     title,
     content,
     paperIds,
-    model: config.ollama.models.relatedWork,
+    model: config.llm.models.relatedWork,
     timestamp: Date.now(),
     userId
   });

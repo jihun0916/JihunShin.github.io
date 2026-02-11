@@ -4,26 +4,18 @@ export const config = {
   isLocal: window.location.hostname === 'localhost' ||
            window.location.hostname === '127.0.0.1',
 
-  // Ollama configuration
-  ollama: {
-    // Ollama is enabled if:
-    // 1. Custom URL is configured (for remote access via Tailscale)
-    // 2. Running on localhost
+  // LLM configuration (Claude API)
+  llm: {
+    provider: 'claude',
     get enabled() {
-      const customUrl = localStorage.getItem('ollama_url');
-      return !!customUrl ||
-             window.location.hostname === 'localhost' ||
-             window.location.hostname === '127.0.0.1';
+      return !!localStorage.getItem('claude_api_key');
     },
-    // Use custom URL from localStorage (e.g., Tailscale IP) or default to localhost
-    get baseUrl() {
-      return localStorage.getItem('ollama_url') || 'http://localhost:11434';
-    },
+    defaultModel: 'claude-sonnet-4-20250514',
     models: {
-      translation: 'qwen2.5:14b',         // Korean→English translation
-      relatedWork: 'deepseek-r1:14b',     // Related Work generation
-      summary: 'deepseek-r1:14b',         // Paper summarization
-      keywords: 'qwen3-coder'             // Keyword extraction
+      translation: 'claude-sonnet-4-20250514',     // Korean↔English translation
+      relatedWork: 'claude-sonnet-4-20250514',     // Related Work generation
+      summary: 'claude-sonnet-4-20250514',         // Paper summarization
+      keywords: 'claude-3-5-haiku-20241022'        // Keyword extraction (fast)
     }
   },
 
