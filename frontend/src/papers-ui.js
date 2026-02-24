@@ -9,6 +9,7 @@ import { isGitHubConfigured } from './github-service.js';
 import { fullSync, pullFromGitHub, pushPaperToGitHub, getLastSyncInfo } from './obsidian-sync.js';
 import { paperToMarkdown, paperToFilename } from './obsidian-utils.js';
 import { writeFilesCommit } from './github-service.js';
+import { autoAnalyzeRelationships } from './paper-relations.js';
 
 let allPapers = [];
 let filteredPapers = [];
@@ -1254,6 +1255,7 @@ function initObsidianSyncBar() {
   const fullSyncBtn = document.getElementById('obsidian-full-sync');
   const pullBtn = document.getElementById('obsidian-pull');
   const pushAllBtn = document.getElementById('obsidian-push-all');
+  const autoRelBtn = document.getElementById('obsidian-auto-relations');
   const statusSpan = document.getElementById('obsidian-sync-status');
   const progressDiv = document.getElementById('obsidian-sync-progress');
   const progressBar = document.getElementById('obsidian-sync-progress-bar');
@@ -1284,6 +1286,7 @@ function initObsidianSyncBar() {
     fullSyncBtn.disabled = disabled;
     pullBtn.disabled = disabled;
     pushAllBtn.disabled = disabled;
+    if (autoRelBtn) autoRelBtn.disabled = disabled;
   }
 
   fullSyncBtn.addEventListener('click', async () => {
@@ -1346,6 +1349,30 @@ function initObsidianSyncBar() {
       setTimeout(() => { progressDiv.style.display = 'none'; }, 2000);
     }
   });
+
+  // Auto-analyze relationships button
+  if (autoRelBtn) {
+    autoRelBtn.addEventListener('click', async () => {
+      if (!confirm('Claude API를 사용하여 모든 논문 간 관계를 자동 분석합니다.\n\nAPI 비용이 발생할 수 있습니다. 계속하시겠습니까?')) {
+        return;
+      }
+      setButtons(true);
+      try {
+        const result = await autoAnalyzeRelationships(onProgress);
+        let msg = `✅ ${result.totalRelations}개 관계 발견, ${result.updatedFiles}개 파일 업데이트`;
+        if (result.errors.length) {
+          msg += ` (오류: ${result.errors.length})`;
+          console.warn('[Auto Relations] Errors:', result.errors);
+        }
+        statusSpan.textContent = msg;
+      } catch (err) {
+        statusSpan.textContent = `❌ ${err.message}`;
+      } finally {
+        setButtons(false);
+        setTimeout(() => { progressDiv.style.display = 'none'; }, 3000);
+      }
+    });
+  }
 
   function updateSyncStatus() {
     const info = getLastSyncInfo();
