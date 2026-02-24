@@ -5,6 +5,10 @@ import { generateRelatedWork, saveRelatedWork } from './relatedwork-service.js';
 import { ollamaClient } from './llm-client.js';
 import { config } from './research-config.js';
 import { parseBibtex } from './bibtex-parser.js';
+import { isGitHubConfigured } from './github-service.js';
+import { fullSync, pullFromGitHub, pushPaperToGitHub, getLastSyncInfo } from './obsidian-sync.js';
+import { paperToMarkdown, paperToFilename } from './obsidian-utils.js';
+import { writeFilesCommit } from './github-service.js';
 
 let allPapers = [];
 let filteredPapers = [];
@@ -99,6 +103,9 @@ export function initPapersUI() {
   initPaperModal();
   initBibtexModal();
   initMultiDOIModal();
+
+  // Initialize Obsidian sync bar
+  initObsidianSyncBar();
 
   // Load papers with real-time updates
   loadPapers();
@@ -471,10 +478,18 @@ async function savePaper() {
       // Update existing paper
       await updatePaper(editingPaperId, paperData);
       console.log('Paper updated:', editingPaperId);
+      // Auto-push to GitHub if configured
+      pushPaperToGitHub({ ...paperData, id: editingPaperId }, allPapers).catch(e =>
+        console.warn('[Obsidian] Auto-push failed:', e)
+      );
     } else {
       // Add new paper
       const docId = await addPaper(paperData);
       console.log('Paper added:', docId);
+      // Auto-push to GitHub if configured
+      pushPaperToGitHub({ ...paperData, id: docId }, allPapers).catch(e =>
+        console.warn('[Obsidian] Auto-push failed:', e)
+      );
     }
 
     // Close modal
@@ -1227,5 +1242,127 @@ export function cleanupPapersUI() {
   if (unsubscribe) {
     unsubscribe();
     unsubscribe = null;
+  }
+}
+
+// ──────────────────────────────────────────────
+//  Obsidian Sync Bar
+// ──────────────────────────────────────────────
+
+function initObsidianSyncBar() {
+  const bar = document.getElementById('obsidian-sync-bar');
+  const fullSyncBtn = document.getElementById('obsidian-full-sync');
+  const pullBtn = document.getElementById('obsidian-pull');
+  const pushAllBtn = document.getElementById('obsidian-push-all');
+  const statusSpan = document.getElementById('obsidian-sync-status');
+  const progressDiv = document.getElementById('obsidian-sync-progress');
+  const progressBar = document.getElementById('obsidian-sync-progress-bar');
+  const progressText = document.getElementById('obsidian-sync-progress-text');
+
+  if (!bar) return;
+
+  // Show bar only if GitHub is configured
+  if (isGitHubConfigured()) {
+    bar.style.display = 'block';
+    updateSyncStatus();
+  }
+
+  // Periodically check config (user might set it up in Settings tab)
+  setInterval(() => {
+    bar.style.display = isGitHubConfigured() ? 'block' : 'none';
+  }, 5000);
+
+  function onProgress(msg, percent) {
+    progressDiv.style.display = 'block';
+    progressText.textContent = msg;
+    if (percent >= 0) {
+      progressBar.style.width = `${percent}%`;
+    }
+  }
+
+  function setButtons(disabled) {
+    fullSyncBtn.disabled = disabled;
+    pullBtn.disabled = disabled;
+    pushAllBtn.disabled = disabled;
+  }
+
+  fullSyncBtn.addEventListener('click', async () => {
+    setButtons(true);
+    try {
+      const result = await fullSync(onProgress);
+      statusSpan.textContent = `✅ Pulled: ${result.pulled}, Pushed: ${result.pushed}` +
+        (result.errors.length ? ` (오류: ${result.errors.length})` : '');
+      if (result.errors.length) {
+        console.warn('[Obsidian Sync] Errors:', result.errors);
+      }
+      updateSyncStatus();
+    } catch (err) {
+      statusSpan.textContent = `❌ ${err.message}`;
+    } finally {
+      setButtons(false);
+      setTimeout(() => { progressDiv.style.display = 'none'; }, 2000);
+    }
+  });
+
+  pullBtn.addEventListener('click', async () => {
+    setButtons(true);
+    try {
+      const result = await pullFromGitHub(onProgress);
+      statusSpan.textContent = `✅ Import: ${result.imported}, Updated: ${result.updated}` +
+        (result.errors.length ? ` (오류: ${result.errors.length})` : '');
+      updateSyncStatus();
+    } catch (err) {
+      statusSpan.textContent = `❌ ${err.message}`;
+    } finally {
+      setButtons(false);
+      setTimeout(() => { progressDiv.style.display = 'none'; }, 2000);
+    }
+  });
+
+  pushAllBtn.addEventListener('click', async () => {
+    setButtons(true);
+    onProgress('모든 논문을 GitHub에 푸시 중...', 20);
+    try {
+      const papers = allPapers;
+      if (papers.length === 0) {
+        statusSpan.textContent = '논문이 없습니다.';
+        return;
+      }
+
+      const files = papers.map(paper => ({
+        path: (localStorage.getItem('github_vault_path') || 'papers') + '/' + paperToFilename(paper),
+        content: paperToMarkdown(paper, papers),
+      }));
+
+      onProgress(`${files.length}개 파일 커밋 중...`, 60);
+      await writeFilesCommit(files, `Push all ${files.length} papers from web app`);
+      onProgress('완료!', 100);
+      statusSpan.textContent = `✅ ${files.length}개 논문 GitHub에 푸시 완료`;
+      updateSyncStatus();
+    } catch (err) {
+      statusSpan.textContent = `❌ ${err.message}`;
+    } finally {
+      setButtons(false);
+      setTimeout(() => { progressDiv.style.display = 'none'; }, 2000);
+    }
+  });
+
+  function updateSyncStatus() {
+    const info = getLastSyncInfo();
+    if (info) {
+      const timeAgo = getTimeAgo(info.lastSync);
+      statusSpan.textContent = `마지막 동기화: ${timeAgo} (${info.paperCount}개 논문)`;
+    }
+  }
+
+  function getTimeAgo(date) {
+    const diff = Date.now() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    if (minutes < 1) return '방금';
+    if (minutes < 60) return `${minutes}분 전`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}시간 전`;
+    const days = Math.floor(hours / 24);
+    return `${days}일 전`;
   }
 }

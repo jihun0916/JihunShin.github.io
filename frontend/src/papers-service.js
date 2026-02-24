@@ -36,6 +36,7 @@ export async function addPaper(paperData) {
     notes: paperData.notes || '',
     tags: paperData.tags || [],
     bibtex: paperData.bibtex || '',
+    relatedPapers: paperData.relatedPapers || [],  // [{ paperId, title, type }]
     position3D,
     timestamp: Date.now(),
     userId

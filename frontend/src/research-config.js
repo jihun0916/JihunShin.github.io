@@ -28,5 +28,16 @@ export const config = {
   semanticScholar: {
     baseUrl: 'https://api.semanticscholar.org/graph/v1',
     enabled: true
+  },
+
+  // GitHub Obsidian vault sync
+  github: {
+    get enabled() {
+      return !!(localStorage.getItem('github_token') && localStorage.getItem('github_owner') && localStorage.getItem('github_repo'));
+    },
+    get owner() { return localStorage.getItem('github_owner') || ''; },
+    get repo() { return localStorage.getItem('github_repo') || ''; },
+    get branch() { return localStorage.getItem('github_branch') || 'main'; },
+    get vaultPath() { return localStorage.getItem('github_vault_path') || 'papers'; },
   }
 };

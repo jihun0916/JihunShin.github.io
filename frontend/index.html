@@ -1300,6 +1300,19 @@
       border-top-color: rgba(255, 255, 255, 0.1);
     }
 
+    /* Obsidian Sync Bar */
+    .obsidian-sync-bar {
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, rgba(40, 167, 69, 0.08) 0%, rgba(32, 201, 151, 0.08) 100%);
+      border: 1px solid rgba(40, 167, 69, 0.2);
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+    [data-theme="dark"] .obsidian-sync-bar {
+      background: linear-gradient(135deg, rgba(40, 167, 69, 0.15) 0%, rgba(32, 201, 151, 0.12) 100%);
+      border-color: rgba(40, 167, 69, 0.3);
+    }
+
     /* Visualization Tab */
     .viz-controls {
       display: flex;
@@ -2060,6 +2073,23 @@
             <div class="generate-relatedwork">
               <button id="generate-rw-btn" class="action-btn">선택한 논문으로 Related Work 생성</button>
             </div>
+
+            <!-- Obsidian Sync Bar -->
+            <div id="obsidian-sync-bar" class="obsidian-sync-bar" style="display: none;">
+              <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
+                <span style="font-weight: 600;">📓 Obsidian</span>
+                <button id="obsidian-full-sync" class="action-btn btn-success" style="font-size: 0.85rem;">🔄 Full Sync</button>
+                <button id="obsidian-pull" class="action-btn btn-info" style="font-size: 0.85rem;">⬇️ Pull (GitHub → 여기)</button>
+                <button id="obsidian-push-all" class="action-btn btn-secondary" style="font-size: 0.85rem;">⬆️ Push All (여기 → GitHub)</button>
+                <span id="obsidian-sync-status" style="font-size: 0.85rem; opacity: 0.7;"></span>
+              </div>
+              <div id="obsidian-sync-progress" style="display: none; margin-top: 0.5rem;">
+                <div style="background: rgba(0,0,0,0.1); border-radius: 4px; height: 6px; overflow: hidden;">
+                  <div id="obsidian-sync-progress-bar" style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <span id="obsidian-sync-progress-text" style="font-size: 0.8rem; opacity: 0.7;"></span>
+              </div>
+            </div>
           </div>
 
           <!-- Search Tab -->
@@ -2144,6 +2174,62 @@
               <div class="settings-section">
                 <h4>🔧 고급 설정</h4>
                 <button id="clear-api-key" class="action-btn btn-danger">API 키 삭제</button>
+              </div>
+
+              <!-- ── GitHub / Obsidian Vault 연동 ── -->
+              <h3 style="margin-top: 2rem;">📓 Obsidian Vault 연동 (GitHub)</h3>
+              <p class="settings-description">
+                GitHub 저장소를 통해 Obsidian과 양방향 동기화합니다. 논문 간 <code>[[wikilink]]</code> 관계를 Obsidian에서 관리할 수 있습니다.
+              </p>
+
+              <div class="settings-section" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(32, 201, 151, 0.1) 100%);">
+                <h4>🔗 GitHub 저장소 설정</h4>
+                <div class="settings-info" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label style="min-width: 120px;">Personal Token:</label>
+                    <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxx..." class="settings-input" style="font-family: monospace; flex: 1;">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label style="min-width: 120px;">Owner (유저명):</label>
+                    <input type="text" id="github-owner-input" placeholder="예: jihun0916" class="settings-input" style="flex: 1;">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label style="min-width: 120px;">Repository:</label>
+                    <input type="text" id="github-repo-input" placeholder="예: paper-vault" class="settings-input" style="flex: 1;">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label style="min-width: 120px;">Branch:</label>
+                    <input type="text" id="github-branch-input" placeholder="main" value="main" class="settings-input" style="flex: 1;">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label style="min-width: 120px;">Vault 폴더:</label>
+                    <input type="text" id="github-vault-path-input" placeholder="papers" value="papers" class="settings-input" style="flex: 1;">
+                  </div>
+                  <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button id="save-github-settings" class="action-btn btn-success">저장</button>
+                    <button id="test-github-connection" class="action-btn btn-info">연결 테스트</button>
+                  </div>
+                </div>
+                <div id="github-connection-status" class="connection-status"></div>
+              </div>
+
+              <div class="settings-section">
+                <h4>📋 설정 방법</h4>
+                <ol style="margin-left: 1.5rem; line-height: 2;">
+                  <li>GitHub에서 <strong>private 저장소</strong> 생성 (예: <code>paper-vault</code>)</li>
+                  <li><a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color: #28a745;">Fine-grained Personal Access Token</a> 발급 → <strong>Contents</strong> 권한 (Read & Write)</li>
+                  <li>위 필드에 입력 후 <strong>연결 테스트</strong></li>
+                  <li>Obsidian에서 같은 저장소를 <strong>Obsidian Git 플러그인</strong>으로 연결</li>
+                </ol>
+                <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(40, 167, 69, 0.15); border-left: 3px solid #28a745; border-radius: 4px;">
+                  <strong>💡 동기화 흐름:</strong> 웹앱에서 논문 추가/편집 → GitHub → Obsidian Git 자동 pull.<br>
+                  Obsidian에서 <code>[[wikilink]]</code>로 관계 편집 → Git push → 웹앱에서 pull.
+                </div>
+              </div>
+
+              <div class="settings-section">
+                <h4>🔧 GitHub 고급 설정</h4>
+                <button id="clear-github-settings" class="action-btn btn-danger">GitHub 설정 삭제</button>
               </div>
             </div>
           </div>

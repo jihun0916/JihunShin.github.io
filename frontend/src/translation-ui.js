@@ -15,15 +15,17 @@ export function initTranslationUI() {
   const inputTextarea = document.getElementById('translate-input');
   const outputDiv = document.getElementById('translate-output');
 
-  // Check if Ollama is enabled
-  if (!config.llm.enabled) {
-    outputDiv.textContent = 'Claude API 키가 설정되지 않았습니다.\n\n설정 탭에서 API 키를 입력해주세요.';
-    translateBtn.disabled = true;
-    return;
-  }
+  // Check API key at translate time, not at init time
+  // (user may set the key in Settings tab after init)
 
   // Translate button
   translateBtn.addEventListener('click', async () => {
+    // Check API key before translating
+    if (!config.llm.enabled) {
+      outputDiv.textContent = 'Claude API 키가 설정되지 않았습니다.\n\n설정 탭에서 API 키를 입력해주세요.';
+      return;
+    }
+
     const koreanText = inputTextarea.value.trim();
 
     if (!koreanText) {

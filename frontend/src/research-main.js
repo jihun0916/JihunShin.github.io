@@ -100,6 +100,11 @@ function initTabs() {
           tab.classList.remove('active');
         }
       });
+
+      // Refresh translation tab metadata when switching to it
+      if (tabName === 'translation') {
+        initTranslationTab();
+      }
     });
   });
 }
