@@ -8,7 +8,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <title>Jihun Shin - Personal Homepage</title>
   <!-- Quill Editor -->
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
@@ -27,15 +27,15 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      background: #fff;
-      color: #2c3e50;
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      background: #faf9f7;
+      color: #2d2d2d;
       transition: background 0.3s, color 0.3s;
     }
 
     [data-theme="dark"] body {
-      background: #0a0a0a;
-      color: #ddd;
+      background: #111;
+      color: #d4d4d4;
     }
 
     /* ========== TOP NAVIGATION ========== */
@@ -48,71 +48,68 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
-      height: 56px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 0 2.5rem;
+      height: 52px;
+      background: rgba(250, 249, 247, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     [data-theme="dark"] .topnav {
-      background: rgba(10, 10, 10, 0.95);
-      border-bottom-color: rgba(255, 255, 255, 0.08);
+      background: rgba(17, 17, 17, 0.92);
+      border-bottom-color: rgba(255, 255, 255, 0.06);
     }
 
     .topnav-name {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: 'IBM Plex Serif', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 600;
       color: inherit;
       text-decoration: none;
+      letter-spacing: -0.01em;
     }
 
     .topnav-links {
       display: flex;
       align-items: center;
-      gap: 0.2rem;
+      gap: 0.1rem;
     }
 
     .topnav-links a {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
-      font-weight: 500;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.85rem;
+      font-weight: 400;
       color: inherit;
       text-decoration: none;
-      opacity: 0.6;
+      opacity: 0.5;
       transition: opacity 0.2s;
-      border-radius: 6px;
     }
 
-    .topnav-links a:hover,
+    .topnav-links a:hover {
+      opacity: 0.85;
+    }
+
     .topnav-links a.active {
       opacity: 1;
+      font-weight: 500;
     }
 
     .theme-toggle {
       background: none;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      border-radius: 6px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 500;
-      font-size: 0.8rem;
+      border: none;
+      font-family: inherit;
+      font-weight: 400;
+      font-size: 0.85rem;
       color: inherit;
-      padding: 0.35rem 0.8rem;
+      opacity: 0.4;
+      padding: 0.35rem 0.5rem;
       cursor: pointer;
-      transition: all 0.2s;
-      margin-left: 0.5rem;
+      transition: opacity 0.2s;
+      margin-left: 0.3rem;
     }
 
     .theme-toggle:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    [data-theme="dark"] .theme-toggle {
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    [data-theme="dark"] .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.08);
+      opacity: 0.8;
     }
 
     /* ========== SECTIONS ========== */
@@ -120,20 +117,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 4rem 2rem 3rem;
+      padding: 3.5rem 2.5rem 2.5rem;
       position: relative;
     }
 
     section:first-of-type {
-      padding-top: 7rem;
+      padding-top: 6.5rem;
     }
 
     .section-title {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #2c3e50;
+      font-family: 'IBM Plex Serif', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.8rem;
+      letter-spacing: -0.02em;
+      color: inherit;
       align-self: flex-start;
       max-width: 900px;
       width: 100%;
@@ -141,39 +139,25 @@
       margin-right: auto;
     }
 
-    [data-theme="dark"] .section-title {
-      border-bottom-color: #ddd;
-    }
-
     .section-content {
       max-width: 900px;
       width: 100%;
     }
 
-    /* Section separator */
-    section + section {
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    [data-theme="dark"] section + section {
-      border-top-color: rgba(255, 255, 255, 0.06);
-    }
-
     /* ========== ABOUT SECTION ========== */
     .about-container {
       display: flex;
-      gap: 2rem;
+      gap: 2.5rem;
       align-items: flex-start;
     }
 
     .about-photo {
-      width: 160px;
-      height: 160px;
-      border-radius: 12px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
       overflow: hidden;
       position: relative;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       cursor: pointer;
     }
 
@@ -204,90 +188,106 @@
     }
 
     .about-intro {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      opacity: 0.85;
-      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #444;
+      margin-bottom: 1.2rem;
+    }
+
+    [data-theme="dark"] .about-intro {
+      color: #b0b0b0;
+    }
+
+    .about-intro strong {
+      color: #2d2d2d;
+      font-weight: 600;
+    }
+
+    [data-theme="dark"] .about-intro strong {
+      color: #e0e0e0;
+    }
+
+    .about-intro a {
+      color: #555;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    [data-theme="dark"] .about-intro a {
+      color: #aaa;
     }
 
     .about-links {
       display: flex;
-      gap: 0.8rem;
+      gap: 1.2rem;
       flex-wrap: wrap;
     }
 
     .about-link {
-      padding: 0.5rem 1rem;
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 6px;
       text-decoration: none;
-      color: inherit;
-      font-weight: 500;
+      color: #555;
       font-size: 0.9rem;
-      transition: all 0.2s;
+      font-weight: 400;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
     }
 
     .about-link:hover {
-      background: rgba(0, 0, 0, 0.1);
+      color: #222;
+      border-color: #888;
     }
 
     [data-theme="dark"] .about-link {
-      background: rgba(255, 255, 255, 0.08);
+      color: #999;
+      border-color: #555;
     }
 
     [data-theme="dark"] .about-link:hover {
-      background: rgba(255, 255, 255, 0.12);
+      color: #ddd;
+      border-color: #999;
     }
 
     /* ========== PUBLICATIONS SECTION ========== */
     .pub-year-group {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
 
     .pub-year {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-family: 'IBM Plex Serif', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
       margin-bottom: 1rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      color: #888;
     }
 
     [data-theme="dark"] .pub-year {
-      border-bottom-color: rgba(255, 255, 255, 0.1);
+      color: #666;
     }
 
     .pub-list {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.8rem;
     }
 
     .pub-card {
       display: flex;
       gap: 1.5rem;
-      padding: 1rem 0;
-      transition: all 0.2s;
-    }
-
-    .pub-card:hover {
-      background: rgba(0, 0, 0, 0.02);
-      border-radius: 8px;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    [data-theme="dark"] .pub-card:hover {
-      background: rgba(255, 255, 255, 0.03);
+      padding: 0;
     }
 
     .pub-image {
       width: 200px;
       height: 130px;
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.03);
+      border-radius: 4px;
+      background: #f0efed;
       flex-shrink: 0;
       object-fit: contain;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="dark"] .pub-image {
+      background: #1a1a1a;
     }
 
     .pub-info {
@@ -295,90 +295,93 @@
     }
 
     .pub-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 0.3rem;
-      line-height: 1.4;
+      margin-bottom: 0.25rem;
+      line-height: 1.45;
+      color: #1a1a1a;
+    }
+
+    [data-theme="dark"] .pub-title {
+      color: #e0e0e0;
     }
 
     .pub-desc {
-      font-size: 0.9rem;
-      opacity: 0.65;
-      margin-bottom: 0.5rem;
+      font-size: 0.88rem;
+      color: #666;
+      margin-bottom: 0.4rem;
       line-height: 1.5;
     }
 
+    [data-theme="dark"] .pub-desc {
+      color: #888;
+    }
+
     .pub-venue {
+      font-family: 'IBM Plex Serif', Georgia, serif;
       font-style: italic;
-      font-weight: 600;
-      color: #e74c3c;
+      font-weight: 400;
+      color: #b44;
     }
 
     [data-theme="dark"] .pub-venue {
-      color: #ff6b6b;
+      color: #e87;
     }
 
     .pub-links {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.8rem;
       flex-wrap: wrap;
+      margin-top: 0.2rem;
     }
 
     .pub-link {
-      padding: 0.25rem 0.6rem;
-      background: rgba(0, 0, 0, 0.06);
-      border-radius: 4px;
       text-decoration: none;
-      color: inherit;
-      font-size: 0.8rem;
+      color: #4a7ab5;
+      font-size: 0.82rem;
       font-weight: 500;
-      transition: all 0.2s;
+      transition: color 0.2s;
     }
 
     .pub-link:hover {
-      background: rgba(0, 0, 0, 0.12);
+      color: #2a5a95;
+      text-decoration: underline;
     }
 
     [data-theme="dark"] .pub-link {
-      background: rgba(255, 255, 255, 0.08);
+      color: #7aafdf;
     }
 
     [data-theme="dark"] .pub-link:hover {
-      background: rgba(255, 255, 255, 0.15);
+      color: #9ac5ef;
     }
 
     /* ========== ARTWORK SECTION ========== */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      gap: 0.6rem;
     }
 
     .gallery-item {
       aspect-ratio: 1;
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s;
       cursor: pointer;
       overflow: hidden;
+      border-radius: 2px;
     }
 
     .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.4s ease;
     }
 
-    .gallery-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    [data-theme="dark"] .gallery-item {
-      background: rgba(255, 255, 255, 0.03);
+    .gallery-item:hover img {
+      transform: scale(1.06);
     }
 
     /* ========== POSTS SECTION ========== */
@@ -984,24 +987,24 @@
     }
 
     .guestbook-form button {
-      padding: 0.8rem 1.5rem;
-      background: #2c3e50;
+      padding: 0.7rem 1.5rem;
+      background: #333;
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 4px;
       font-family: inherit;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.2s;
     }
 
     .guestbook-form button:hover {
-      background: #34495e;
+      background: #555;
     }
 
     [data-theme="dark"] .guestbook-form button {
-      background: #ddd;
-      color: #1a1a1a;
+      background: #ccc;
+      color: #111;
     }
 
     /* ========== MODAL ========== */
@@ -2287,8 +2290,7 @@
         <div class="about-text">
           <p class="about-intro">
             I am a <strong>PhD student</strong> at the <strong>KAIST Graduate School of Culture Technology</strong>,
-            advised by Professor <a href="https://lava.kaist.ac.kr/?page_id=41" target="_blank"
-              style="color: inherit; text-decoration: underline;">Sung-Hee Lee</a>.
+            advised by Professor <a href="https://lava.kaist.ac.kr/?page_id=41" target="_blank">Sung-Hee Lee</a>.
             I previously earned my Master’s degree from the same department and hold a Bachelor’s degree in Oriental
             Painting from Hongik University, where I also completed an extensive curriculum in Computer Science.
             I have a profound interest in the <strong>technologies and human efforts dedicated to mutual
