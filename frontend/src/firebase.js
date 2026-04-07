@@ -1,6 +1,6 @@
 // Firebase configuration and Firestore instance
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, onSnapshot, query, orderBy } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -17,7 +17,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Guestbook collection reference
+// Collection references
 const guestbookCollection = collection(db, "guestbook");
+const postsCollection = collection(db, "posts");
 
-export { db, auth, guestbookCollection, addDoc, getDocs, onSnapshot, query, orderBy };
+export { db, auth, guestbookCollection, postsCollection, doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where };
