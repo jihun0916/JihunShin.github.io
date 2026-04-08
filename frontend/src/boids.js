@@ -1,6 +1,5 @@
-// boids.js — Boids flocking algorithm with fish silhouette rendering
+// boids.js — Boids flocking algorithm with fish/bird silhouette rendering
 
-const BOID_COUNT = 18;
 const MAX_SPEED = 1.8;
 const MAX_FORCE = 0.04;
 const PERCEPTION_RADIUS = 80;
@@ -10,20 +9,26 @@ const EDGE_TURN_FORCE = 0.15;
 const MOUSE_RADIUS = 120;
 const MOUSE_FLEE_FORCE = 0.08;
 
+const SPAWN_INTERVAL = 8000;  // new boid every 8 seconds
+const MAX_BOIDS = 15;         // when reached, switch to birds and reset
+
 let canvas, ctx;
 let boids = [];
 let mouse = { x: -1000, y: -1000 };
 let isDark = false;
 let animId = null;
+let spawnTimer = null;
+let creatureType = 'fish';    // 'fish' or 'bird'
 
 class Boid {
-    constructor(w, h) {
+    constructor(w, h, type) {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
         const angle = Math.random() * Math.PI * 2;
         this.vx = Math.cos(angle) * (MAX_SPEED * 0.5 + Math.random() * MAX_SPEED * 0.5);
         this.vy = Math.sin(angle) * (MAX_SPEED * 0.5 + Math.random() * MAX_SPEED * 0.5);
         this.size = 6 + Math.random() * 5;
+        this.type = type;
     }
 
     update(boids, w, h) {
@@ -36,7 +41,6 @@ class Boid {
         this.vx += sep.x * 1.5 + ali.x * 1.0 + coh.x * 1.0 + edge.x + flee.x;
         this.vy += sep.y * 1.5 + ali.y * 1.0 + coh.y * 1.0 + edge.y + flee.y;
 
-        // Limit speed
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         if (speed > MAX_SPEED) {
             this.vx = (this.vx / speed) * MAX_SPEED;
@@ -143,40 +147,71 @@ class Boid {
     }
 
     draw(ctx) {
+        if (this.type === 'bird') {
+            this.drawBird(ctx);
+        } else {
+            this.drawFish(ctx);
+        }
+    }
+
+    drawFish(ctx) {
         const angle = Math.atan2(this.vy, this.vx);
         const s = this.size;
+        const bodyColor = isDark ? 'rgba(255, 255, 255, 0.055)' : 'rgba(0, 0, 0, 0.055)';
+        const tailColor = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
 
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(angle);
 
-        // Fish body (teardrop shape)
+        // Body
         ctx.beginPath();
-        ctx.moveTo(s * 1.1, 0);                  // nose
+        ctx.moveTo(s * 1.1, 0);
         ctx.quadraticCurveTo(s * 0.3, -s * 0.45, -s * 0.5, -s * 0.15);
         ctx.lineTo(-s * 0.5, s * 0.15);
         ctx.quadraticCurveTo(s * 0.3, s * 0.45, s * 1.1, 0);
         ctx.closePath();
-
-        if (isDark) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.055)';
-        } else {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.055)';
-        }
+        ctx.fillStyle = bodyColor;
         ctx.fill();
 
-        // Tail fin
+        // Tail
         ctx.beginPath();
         ctx.moveTo(-s * 0.4, 0);
         ctx.lineTo(-s * 0.95, -s * 0.3);
         ctx.quadraticCurveTo(-s * 0.6, 0, -s * 0.95, s * 0.3);
         ctx.closePath();
+        ctx.fillStyle = tailColor;
+        ctx.fill();
 
-        if (isDark) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-        } else {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-        }
+        ctx.restore();
+    }
+
+    drawBird(ctx) {
+        const angle = Math.atan2(this.vy, this.vx);
+        const s = this.size;
+        const color = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(angle);
+
+        // Wing shape (V / checkmark silhouette)
+        ctx.beginPath();
+        // Left wing
+        ctx.moveTo(s * 0.3, 0);
+        ctx.quadraticCurveTo(-s * 0.2, -s * 0.6, -s * 1.0, -s * 0.4);
+        ctx.quadraticCurveTo(-s * 0.4, -s * 0.2, s * 0.1, 0);
+        // Right wing
+        ctx.quadraticCurveTo(-s * 0.4, s * 0.2, -s * 1.0, s * 0.4);
+        ctx.quadraticCurveTo(-s * 0.2, s * 0.6, s * 0.3, 0);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        // Small body dot
+        ctx.beginPath();
+        ctx.arc(s * 0.15, 0, s * 0.12, 0, Math.PI * 2);
+        ctx.fillStyle = color;
         ctx.fill();
 
         ctx.restore();
@@ -188,6 +223,18 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
+}
+
+function spawnBoid() {
+    if (canvas.width === 0 || canvas.height === 0) return;
+
+    boids.push(new Boid(canvas.width, canvas.height, creatureType));
+
+    if (boids.length >= MAX_BOIDS) {
+        // Switch creature type and reset
+        creatureType = creatureType === 'fish' ? 'bird' : 'fish';
+        boids = [new Boid(canvas.width, canvas.height, creatureType)];
+    }
 }
 
 function animate() {
@@ -223,9 +270,9 @@ export function initBoids() {
         mouse.y = -1000;
     });
 
-    for (let i = 0; i < BOID_COUNT; i++) {
-        boids.push(new Boid(canvas.width, canvas.height));
-    }
+    // Start with 1 boid, spawn more over time
+    boids.push(new Boid(canvas.width, canvas.height, creatureType));
+    spawnTimer = setInterval(spawnBoid, SPAWN_INTERVAL);
 
     animate();
 }
