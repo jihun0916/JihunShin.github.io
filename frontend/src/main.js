@@ -3,6 +3,7 @@ import { initGuestbook } from './guestbook.js';
 import { initAuth } from './auth.js';
 import { initResearch } from './research-main.js';
 import { initPostsUI } from './posts-ui.js';
+import { initBoids, setBoidsTheme } from './boids.js';
 
 function init() {
     // Initialize Firebase Authentication
@@ -30,8 +31,12 @@ function init() {
             const isDark = document.documentElement.dataset.theme === 'dark';
             document.documentElement.dataset.theme = isDark ? '' : 'dark';
             localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            setBoidsTheme(!isDark);
         });
     }
+
+    // Boids fish background
+    initBoids();
 
     // Smooth scroll for nav links
     document.querySelectorAll('.topnav a[href^="#"]').forEach(link => {
