@@ -2,7 +2,24 @@
   "permissions": {
     "allow": [
       "Bash(dir:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:limhyungtae.github.io)",
+      "mcp__Claude_Preview__preview_start",
+      "WebSearch",
+      "WebFetch(domain:sites.google.com)",
+      "WebFetch(domain:lava.kaist.ac.kr)",
+      "Bash(find C:/Users/신지훈 -maxdepth 5 -name *unified* -o -name *xrmemory* -o -name *situately* -o -name *framework*teaser*)",
+      "Bash(find C:/Users/신지훈 -maxdepth 4 \\\\\\(-name *.png -o -name *.jpg -o -name *.jpeg \\\\\\) -newer C:/Users/신지훈/Desktop/homepage/frontend/src/main.js)",
+      "Bash(gh run:*)",
+      "WebFetch(domain:www.soominpark.xyz)",
+      "WebFetch(domain:www.meta.com)",
+      "WebFetch(domain:berryhi.com)",
+      "Bash(find \"C:/Users/신지훈/Downloads\" -maxdepth 2 -newer \"C:/Users/신지훈/Downloads/teaser_fig.png\" \\\\\\( -name \"*.png\" -o -name \"*.jpg\" -o -name \"*.jpeg\" \\\\\\) 2>/dev/null | head -5)",
+      "Bash(find \"C:/Users/신지훈\" -maxdepth 4 \\\\\\( -iname \"*seal*\" -o -iname \"*낙관*\" -o -iname \"*stamp*\" -o -iname \"*印*\" \\\\\\) 2>/dev/null | head -10)",
+      "Bash(cp \"C:/Users/신지훈/Documents/카카오톡 받은 파일/KakaoTalk_20260521_150909448.png\" \"C:/Users/신지훈/Desktop/homepage/frontend/public/images/seal.png\" && ls -la \"C:/Users/신지훈/Desktop/homepage/frontend/public/images/seal.png\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
