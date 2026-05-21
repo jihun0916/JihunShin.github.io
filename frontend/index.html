@@ -124,26 +124,97 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 3.5rem 2.5rem 2.5rem;
+      padding: 0.6rem 2.5rem;
       position: relative;
     }
 
-    section:first-of-type {
-      padding-top: 6.5rem;
+    section#about {
+      padding: 6.5rem 2.5rem 4rem;
+    }
+
+    section:last-of-type {
+      padding-bottom: 6rem;
     }
 
     .section-title {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 1.5rem;
       font-weight: 600;
-      margin-bottom: 1.8rem;
       letter-spacing: -0.02em;
       color: inherit;
-      align-self: flex-start;
+    }
+
+    /* Collapsible sections */
+    .section-details {
       max-width: 900px;
       width: 100%;
+      margin: 0 auto;
+    }
+
+    .section-summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 1rem 0;
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: border-color 0.2s;
+      user-select: none;
+    }
+
+    .section-summary::-webkit-details-marker { display: none; }
+    .section-summary::marker { content: ""; }
+
+    .section-summary::before {
+      content: "+";
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      opacity: 0.5;
+      transition: transform 0.3s ease, opacity 0.2s;
+      display: inline-block;
+      width: 1ch;
+    }
+
+    .section-details[open] > .section-summary::before {
+      transform: rotate(45deg);
+      opacity: 0.9;
+    }
+
+    .section-summary:hover {
+      border-bottom-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .section-summary:hover::before {
+      opacity: 0.9;
+    }
+
+    .section-count {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 0.85rem;
+      color: #777;
       margin-left: auto;
-      margin-right: auto;
+      font-weight: 400;
+    }
+
+    [data-theme="dark"] .section-summary {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .section-details[open] > .section-content {
+      animation: fadeInContent 0.4s ease;
+      padding-top: 2rem;
+    }
+
+    @keyframes fadeInContent {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Light mode summary border */
+    html:not([data-theme="dark"]) .section-summary {
+      border-bottom-color: rgba(0, 0, 0, 0.1);
     }
 
     .section-content {
@@ -173,16 +244,29 @@
       color: inherit;
     }
 
-    .hero-seal {
-      width: clamp(70px, 9vw, 110px);
+    /* Fixed seal — bottom right of viewport like a traditional Oriental painting signature */
+    .fixed-seal {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: clamp(110px, 11vw, 160px);
       height: auto;
-      margin-top: 0.5rem;
-      opacity: 0.85;
-      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
+      z-index: 2;
+      opacity: 0.7;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
 
-    [data-theme="dark"] .hero-seal {
-      opacity: 1;
+    [data-theme="dark"] .fixed-seal {
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .fixed-seal {
+        width: 80px;
+        bottom: 1rem;
+        right: 1rem;
+      }
     }
 
     .hero-tagline {
@@ -2304,6 +2388,9 @@
 </head>
 
 <body>
+  <!-- Fixed Seal (Oriental painting style) -->
+  <img src="/images/seal.png" class="fixed-seal" alt="Seal">
+
   <!-- Top Navigation -->
   <nav class="topnav">
     <a href="#about" class="topnav-name">Jihun Shin</a>
@@ -2323,7 +2410,6 @@
     <div class="section-content hero-content">
       <div class="hero-name-block">
         <h1 class="hero-name">JIHUN<br>SHIN</h1>
-        <img src="/images/seal.png" class="hero-seal" alt="Seal">
       </div>
       <p class="hero-tagline">PhD researcher &middot; Artist &middot; BerryHi founder</p>
       <p class="about-intro">
@@ -2347,7 +2433,8 @@
 
   <!-- ========== PUBLICATIONS SECTION ========== -->
   <section id="publications">
-    <h1 class="section-title">Publications</h1>
+    <details class="section-details">
+      <summary class="section-summary"><span class="section-title">Publications</span><span class="section-count">4</span></summary>
     <div class="section-content">
       <!-- 2026 -->
       <div class="pub-year-group">
@@ -2421,11 +2508,13 @@
         </div>
       </div>
     </div>
+    </details>
   </section>
 
   <!-- ========== ARTWORK SECTION ========== -->
   <section id="artwork">
-    <h1 class="section-title">Artwork</h1>
+    <details class="section-details">
+      <summary class="section-summary"><span class="section-title">Artwork</span><span class="section-count">9</span></summary>
     <div class="section-content">
       <div class="gallery-grid">
         <div class="gallery-item" onclick="openModal('artwork', 0)"><img src="/images/painting1.png"
@@ -2448,11 +2537,13 @@
         <div class="gallery-item" onclick="openModal('artwork', 8)"><img src="/images/Hole in.png" alt="Hole in"></div>
       </div>
     </div>
+    </details>
   </section>
 
   <!-- ========== POSTS SECTION ========== -->
   <section id="posts">
-    <h1 class="section-title">Posts</h1>
+    <details class="section-details">
+      <summary class="section-summary"><span class="section-title">Posts</span></summary>
     <div class="section-content">
       <div class="posts-header">
         <div></div>
@@ -2462,11 +2553,13 @@
         <!-- Posts rendered dynamically from Firestore -->
       </div>
     </div>
+    </details>
   </section>
 
   <!-- ========== GUESTBOOK SECTION ========== -->
   <section id="guestbook">
-    <h1 class="section-title">Guestbook</h1>
+    <details class="section-details">
+      <summary class="section-summary"><span class="section-title">Guestbook</span></summary>
     <div class="section-content">
       <div class="guestbook-container">
         <p style="text-align: center; opacity: 0.7; margin-bottom: 1rem;">
@@ -2486,6 +2579,7 @@
         </form>
       </div>
     </div>
+    </details>
   </section>
 
   <!-- ========== RESEARCH SECTION ========== -->
