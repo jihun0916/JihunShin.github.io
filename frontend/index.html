@@ -151,47 +151,51 @@
       width: 100%;
     }
 
-    /* ========== ABOUT SECTION ========== */
-    .about-container {
+    /* ========== HERO (ABOUT) ========== */
+    .hero-content {
+      padding-top: 1rem;
+    }
+
+    .hero-name-block {
       display: flex;
-      gap: 2.5rem;
       align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
     }
 
-    .about-photo {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
-      cursor: pointer;
+    .hero-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(4rem, 11vw, 9rem);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: inherit;
     }
 
-    .about-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transition: opacity 0.4s ease;
+    .hero-seal {
+      width: clamp(70px, 9vw, 110px);
+      height: auto;
+      margin-top: 0.5rem;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
     }
 
-    .about-photo .photo-hover {
-      opacity: 0;
-    }
-
-    .about-photo:hover .photo-default {
-      opacity: 0;
-    }
-
-    .about-photo:hover .photo-hover {
+    [data-theme="dark"] .hero-seal {
       opacity: 1;
     }
 
-    .about-text {
-      flex: 1;
+    .hero-tagline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #888;
+      margin-bottom: 2.2rem;
+      letter-spacing: 0.01em;
+    }
+
+    [data-theme="dark"] .hero-tagline {
+      color: #aaa;
     }
 
     .about-intro {
@@ -2259,17 +2263,16 @@
         font-size: 1.5rem;
       }
 
-      .about-container {
-        flex-direction: column;
-        align-items: center;
+      .hero-name-block {
+        gap: 1rem;
       }
 
-      .about-intro {
-        text-align: center;
+      .hero-seal {
+        width: 60px;
       }
 
-      .about-links {
-        justify-content: center;
+      .hero-tagline {
+        font-size: 0.95rem;
       }
 
       .gallery-grid {
@@ -2315,32 +2318,29 @@
     </div>
   </nav>
 
-  <!-- ========== ABOUT SECTION ========== -->
+  <!-- ========== ABOUT SECTION (HERO) ========== -->
   <section id="about">
-    <div class="section-content">
-      <div class="about-container">
-        <div class="about-photo">
-          <img src="/images/profile1.png" class="photo-default" alt="Profile">
-          <img src="/images/profile2.jpg" class="photo-hover" alt="Profile Hover">
-        </div>
-        <div class="about-text">
-          <p class="about-intro">
-            I am <strong>Jihun Shin</strong>, a <strong>PhD student</strong> at the <strong>KAIST Graduate School of Culture Technology</strong>,
-            advised by Professor <a href="https://lava.kaist.ac.kr/?page_id=41" target="_blank">Sung-Hee Lee</a>.
-            I am also the CEO of <a href="https://www.meta.com/experiences/parameterroom/24417022141334169/" target="_blank" class="berryhi-link"><strong>BerryHi</strong></a>,
-            an XR startup building a next-generation community platform powered by real-space fusion technology.
-            I previously earned my Master’s degree from the same department and hold a Bachelor’s degree in Oriental
-            Painting from Hongik University, where I also completed an extensive curriculum in Computer Science.
-            My research interests lie in the <strong>technologies and human efforts dedicated to mutual
-              understanding</strong>, spanning
-            <strong>Computer Graphics, Telepresence, Digital Humans, and Virtual Spaces</strong>.
-          </p>
-          <div class="about-links">
-            <a href="https://scholar.google.com/citations?user=FA4zxqEAAAAJ&hl=ko" class="about-link">Google Scholar</a>
-            <a href="https://www.linkedin.com/in/지훈-신-959b44221" class="about-link">LinkedIn</a>
-            <span class="about-email">jihun dot shin at kaist dot ac dot kr</span>
-          </div>
-        </div>
+    <div class="section-content hero-content">
+      <div class="hero-name-block">
+        <h1 class="hero-name">JIHUN<br>SHIN</h1>
+        <img src="/images/seal.png" class="hero-seal" alt="Seal">
+      </div>
+      <p class="hero-tagline">PhD researcher &middot; Artist &middot; BerryHi founder</p>
+      <p class="about-intro">
+        I am <strong>Jihun Shin</strong>, a <strong>PhD student</strong> at the <strong>KAIST Graduate School of Culture Technology</strong>,
+        advised by Professor <a href="https://lava.kaist.ac.kr/?page_id=41" target="_blank">Sung-Hee Lee</a>.
+        I am also the CEO of <a href="https://www.meta.com/experiences/parameterroom/24417022141334169/" target="_blank" class="berryhi-link"><strong>BerryHi</strong></a>,
+        an XR startup building a next-generation community platform powered by real-space fusion technology.
+        I previously earned my Master’s degree from the same department and hold a Bachelor’s degree in Oriental
+        Painting from Hongik University, where I also completed an extensive curriculum in Computer Science.
+        My research interests lie in the <strong>technologies and human efforts dedicated to mutual
+          understanding</strong>, spanning
+        <strong>Computer Graphics, Telepresence, Digital Humans, and Virtual Spaces</strong>.
+      </p>
+      <div class="about-links">
+        <a href="https://scholar.google.com/citations?user=FA4zxqEAAAAJ&hl=ko" class="about-link">Google Scholar</a>
+        <a href="https://www.linkedin.com/in/지훈-신-959b44221" class="about-link">LinkedIn</a>
+        <span class="about-email">jihun dot shin at kaist dot ac dot kr</span>
       </div>
     </div>
   </section>

@@ -18,15 +18,14 @@ function init() {
     // Initialize posts UI (blog system)
     initPostsUI();
 
-    // Theme toggle
+    // Theme toggle — dark is default
     const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        // Load saved theme
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-            document.documentElement.dataset.theme = 'dark';
-        }
+    const saved = localStorage.getItem('theme');
+    if (saved !== 'light') {
+        document.documentElement.dataset.theme = 'dark';
+    }
 
+    if (themeBtn) {
         themeBtn.addEventListener('click', () => {
             const isDark = document.documentElement.dataset.theme === 'dark';
             document.documentElement.dataset.theme = isDark ? '' : 'dark';
