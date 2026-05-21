@@ -3,6 +3,7 @@ import { initGuestbook } from './guestbook.js';
 import { initAuth } from './auth.js';
 import { initResearch } from './research-main.js';
 import { initPostsUI } from './posts-ui.js';
+import { initSketchesUI } from './sketches-ui.js';
 import { initBoids, setBoidsTheme } from './boids.js';
 
 function init() {
@@ -15,8 +16,11 @@ function init() {
     // Initialize guestbook with Firebase
     initGuestbook();
 
-    // Initialize posts UI (blog system)
+    // Initialize posts UI (blog system) — kept for master-login modal wiring
     initPostsUI();
+
+    // Initialize sketches UI (image upload + grid)
+    initSketchesUI();
 
     // Theme toggle — dark is default
     const themeBtn = document.getElementById('theme-toggle');

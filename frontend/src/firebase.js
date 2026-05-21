@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmSw-yZ5DWMl3w_RHyz3HRz7FUqIcbJFM",
@@ -16,9 +17,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // Collection references
 const guestbookCollection = collection(db, "guestbook");
 const postsCollection = collection(db, "posts");
+const sketchesCollection = collection(db, "sketches");
 
-export { db, auth, guestbookCollection, postsCollection, doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where };
+export {
+    db, auth, storage,
+    guestbookCollection, postsCollection, sketchesCollection,
+    doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where,
+    storageRef, uploadBytes, getDownloadURL, deleteObject
+};
