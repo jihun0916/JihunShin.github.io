@@ -655,7 +655,6 @@
 
     .sketch-image-wrap {
       position: relative;
-      aspect-ratio: 1;
       overflow: hidden;
       border-radius: 4px;
       background: rgba(255, 255, 255, 0.04);
@@ -667,8 +666,8 @@
 
     .sketch-image-wrap img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       cursor: zoom-in;
       transition: transform 0.4s ease;
     }
