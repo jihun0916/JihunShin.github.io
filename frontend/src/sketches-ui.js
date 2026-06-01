@@ -29,6 +29,9 @@ function renderSketchesGrid() {
     const grid = document.getElementById('sketches-grid');
     if (!grid) return;
 
+    const countEl = document.getElementById('sketches-count');
+    if (countEl) countEl.textContent = sketches.length;
+
     if (sketches.length === 0) {
         grid.innerHTML = '<div class="sketches-empty">No sketches yet.</div>';
         return;
