@@ -7,16 +7,18 @@
 // Example:
 //   { src: '/images/sketches/my_drawing.png', caption: 'A quick study on light' }
 
+const BASE = import.meta.env.BASE_URL;
+
 const sketches = [
-    { src: '/images/sketches/범이.webp', caption: 'Bae Bum' },
-    { src: '/images/sketches/왼발의파업.jpg', caption: 'Left Foot' },
-    { src: '/images/sketches/진관사.jpg', caption: 'Jin-gwan-sa Sketch' },
-    { src: '/images/sketches/지각.jpg', caption: 'Late' },
-    { src: '/images/sketches/croque.jpg', caption: 'Croquis' },
-    { src: '/images/sketches/기다리면서.jpg', caption: 'While Waiting' },
-    { src: '/images/sketches/오헝.jpg', caption: 'Fish Tank' },
-    { src: '/images/sketches/가시나무.jpg', caption: 'Thorn Tree' },
-    { src: '/images/sketches/비사육인간.jpg', caption: 'Undomesticated Human' },
+    { src: `${BASE}images/sketches/범이.webp` },
+    { src: `${BASE}images/sketches/왼발의파업.jpg` },
+    { src: `${BASE}images/sketches/진관사.jpg` },
+    { src: `${BASE}images/sketches/지각.jpg` },
+    { src: `${BASE}images/sketches/croque.jpg` },
+    { src: `${BASE}images/sketches/기다리면서.jpg` },
+    { src: `${BASE}images/sketches/오헝.jpg` },
+    { src: `${BASE}images/sketches/가시나무.jpg` },
+    { src: `${BASE}images/sketches/비사육인간.jpg` },
 ];
 
 export function initSketchesUI() {
