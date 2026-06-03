@@ -19,6 +19,21 @@ const sketches = [
     { src: `${BASE}images/sketches/오헝.jpg` },
     { src: `${BASE}images/sketches/가시나무.jpg` },
     { src: `${BASE}images/sketches/비사육인간.jpg` },
+    { src: `${BASE}images/sketches/토마손.jpg` },
+    { src: `${BASE}images/sketches/나방.jpg` },
+    { src: `${BASE}images/sketches/소화기.jpg` },
+    { src: `${BASE}images/sketches/진관사2.jpg` },
+    { src: `${BASE}images/sketches/전대기.jpg` },
+    { src: `${BASE}images/sketches/폰.jpg` },
+    { src: `${BASE}images/sketches/꽃.jpg` },
+    { src: `${BASE}images/sketches/크로키7.jpg` },
+    { src: `${BASE}images/sketches/크로키6.jpg` },
+    { src: `${BASE}images/sketches/크로키5.jpg` },
+    { src: `${BASE}images/sketches/크로키4.jpg` },
+    { src: `${BASE}images/sketches/크로키3.jpg` },
+    { src: `${BASE}images/sketches/크로키2.jpg` },
+    { src: `${BASE}images/sketches/크로키1.jpg` },
+    { src: `${BASE}images/sketches/라오콘.jpg` },
 ];
 
 export function initSketchesUI() {
