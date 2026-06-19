@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jihun Shin — Resume</title>
+  <style>
+    :root {
+      --ink: #1f2430;
+      --muted: #5b6472;
+      --line: #e2e5ec;
+      --accent: #2a4d8f;
+      --todo: #c2410c;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #f3f4f7; color: var(--ink); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Roboto, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .toolbar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 820px; margin: 0 auto; padding: 14px 24px;
+    }
+    .toolbar a.back { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .toolbar a.back:hover { color: var(--ink); }
+    .btn-download {
+      font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+      color: #fff; background: var(--accent); border: none;
+      padding: 8px 16px; border-radius: 9px;
+    }
+    .btn-download:hover { filter: brightness(1.08); }
+    .page {
+      max-width: 820px; margin: 0 auto 60px; background: #fff;
+      padding: 56px 64px; border-radius: 12px;
+      box-shadow: 0 6px 30px rgba(31, 38, 64, 0.08);
+    }
+    header.cv-head { border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 26px; }
+    .cv-name { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; margin: 0; }
+    .cv-role { font-size: 15px; color: var(--muted); margin: 6px 0 12px; }
+    .cv-contact { font-size: 13px; color: var(--muted); }
+    .cv-contact a { color: var(--accent); text-decoration: none; }
+    .cv-contact a:hover { text-decoration: underline; }
+    .cv-contact .sep { margin: 0 8px; opacity: 0.5; }
+    section.cv { margin: 24px 0; }
+    h2.cv-section {
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 12px; padding-bottom: 5px;
+      border-bottom: 1px solid var(--line);
+    }
+    .entry { margin-bottom: 14px; }
+    .entry-head { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+    .entry-title { font-weight: 700; font-size: 15px; }
+    .entry-when { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .entry-sub { color: var(--muted); font-size: 14px; }
+    .entry-note { font-size: 14px; margin-top: 3px; }
+    ul.tight { margin: 6px 0 0; padding-left: 18px; }
+    ul.tight li { margin-bottom: 3px; }
+    .pub { margin-bottom: 13px; font-size: 14px; }
+    .pub .t { font-weight: 700; }
+    .pub .a { color: var(--ink); }
+    .pub .v { color: var(--muted); font-style: italic; }
+    .pub .me { text-decoration: underline; }
+    .pub .award { color: var(--todo); font-weight: 600; }
+    .pub-links a { color: var(--accent); text-decoration: none; font-size: 13px; margin-right: 10px; }
+    .tags { font-size: 14px; color: var(--ink); }
+    .todo { color: var(--todo); font-weight: 600; }
+    @media (max-width: 700px) {
+      .page { padding: 32px 22px; }
+      .toolbar { padding: 12px 16px; }
+      .entry-head { flex-direction: column; gap: 0; }
+    }
+    @media print {
+      html, body { background: #fff; }
+      .no-print { display: none !important; }
+      .page { max-width: none; margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
+      a { color: var(--ink) !important; text-decoration: none; }
+      h2.cv-section { color: #000; }
+      @page { margin: 16mm 16mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <a class="back" href="./">&larr; Back to homepage</a>
+    <button class="btn-download" onclick="window.print()">Download PDF</button>
+  </div>
+
+  <main class="page">
+    <header class="cv-head">
+      <h1 class="cv-name">Jihun Shin</h1>
+      <div class="cv-role">
+        PhD Student, KAIST Graduate School of Culture Technology &nbsp;·&nbsp; CEO &amp; Founder, BerryHi
+      </div>
+      <div class="cv-contact">
+        <span>jihun dot shin at kaist dot ac dot kr</span>
+        <span class="sep">·</span>
+        <a href="https://scholar.google.com/citations?user=FA4zxqEAAAAJ&hl=ko" target="_blank" rel="noopener">Google Scholar</a>
+        <span class="sep">·</span>
+        <a href="https://www.linkedin.com/in/지훈-신-959b44221" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="sep">·</span>
+        <a href="./" target="_blank" rel="noopener">Homepage</a>
+      </div>
+    </header>
+
+    <section class="cv">
+      <p style="font-size:14.5px;margin:0;">
+        Researcher working at the intersection of <strong>Computer Graphics, Telepresence, Digital Humans,
+        and Virtual Spaces</strong> — building technologies that help people understand one another across
+        distance and difference. Background bridging <strong>fine art</strong> (Oriental Painting) and
+        <strong>computer science</strong>.
+      </p>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Education</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Ph.D., Culture Technology</span>
+          <span class="entry-when">2025 – Present</span>
+        </div>
+        <div class="entry-sub">KAIST Graduate School of Culture Technology · Advisor: Prof. Sung-Hee Lee</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">M.S., Culture Technology</span>
+          <span class="entry-when">2023 – 2025</span>
+        </div>
+        <div class="entry-sub">KAIST Graduate School of Culture Technology · Advisor: Prof. Sung-Hee Lee</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">B.F.A., Oriental Painting</span>
+          <span class="entry-when">2016 – 2023</span>
+        </div>
+        <div class="entry-sub">Hongik University</div>
+      </div>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Experience</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">CEO &amp; Founder — BerryHi</span>
+          <span class="entry-when">2025.07 – Present</span>
+        </div>
+        <div class="entry-sub">XR startup building real-space community platforms</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Sub Instructor — Stanford Center at Incheon Global Campus (SCIGC)</span>
+          <span class="entry-when">2022.02 – 04, 07 – 09</span>
+        </div>
+        <div class="entry-sub">XR programming instruction &amp; labs; demo development and mentoring</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Technical Assistant (TA) — Korea National University of Arts</span>
+          <span class="entry-when">2022.03 – 09</span>
+        </div>
+        <div class="entry-sub">VR environment setup, interaction development &amp; implementation, research</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Developer — Stanford Center at Incheon Global Campus (SCIGC)</span>
+          <span class="entry-when">2021.09 – 12</span>
+        </div>
+        <div class="entry-sub">In-vehicle interface development for autonomous driving</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Short-term Researcher (XR) — Hyundai Motor Company</span>
+          <span class="entry-when">2021.07 – 09</span>
+        </div>
+        <div class="entry-sub">Digital prototyping · via Hongik University Industry–Academic Cooperation Foundation</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Developer — NCSOFT (Interaction Industry–Academic Dev Team)</span>
+          <span class="entry-when">2021.04 – 09</span>
+        </div>
+        <div class="entry-sub">AR interaction implementation</div>
+      </div>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Research Interests</h2>
+      <p class="tags">Computer Graphics · Telepresence · Digital Humans · Virtual / XR Spaces · Embodied AI Agents</p>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Publications</h2>
+
+      <div class="pub">
+        <span class="t">A Unified Framework for Spatially-Aware Embodied Agents in XR.</span>
+        <span class="a"><span class="me">Jihun Shin</span>, DongHwan Shin, Eunseong Lee, Hyeonjin Kim, Sung-Hee Lee.</span>
+        <span class="v">IEEE VR 2026 Workshop (XRMemory'26).</span>
+      </div>
+
+      <div class="pub">
+        <span class="t">Voronoi Rooms: Dynamic Visibility Modulation of Overlapping Spaces for Telepresence.</span>
+        <span class="a">Taehei Kim, <span class="me">Jihun Shin</span>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang, Sung-Hee Lee.</span>
+        <span class="v">ACM Transactions on Graphics (TOG), 2025.</span>
+      </div>
+
+      <div class="pub">
+        <span class="t">Situated Embodied XR Agents via Spatial Reasoning and Prompting.</span>
+        <span class="a"><span class="me">Jihun Shin</span>, Hyeonjin Kim, Eunseong Lee, Donghwan Shin, Kwang Bin Lee, Taehei Kim, Hyeshim Kim, Joonsik An, Sung-Hee Lee.</span>
+        <span class="v">IEEE ISMAR-Adjunct 2025 (Demo).</span>
+      </div>
+
+      <div class="pub">
+        <span class="t">Visibility Modulation of Aligned Spaces for Multi-User Telepresence.</span>
+        <span class="a">Taehei Kim, <span class="me">Jihun Shin</span>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang, Sung-Hee Lee.</span>
+        <span class="v">IEEE ISMAR-Adjunct 2024 (Demo).</span>
+        <span class="award">Honorable Mention.</span>
+      </div>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Honors &amp; Awards</h2>
+      <ul class="tight">
+        <li><strong>Excellence Award</strong> (Developer Division) — K-Digital Challenge: 2025 Virtual Convergence Service Developer Competition, Ministry of Science and ICT / NIPA. Team <em>berryhi</em>, project &ldquo;Just askie!&rdquo;</li>
+        <li><strong>Honorable Mention</strong> — IEEE ISMAR-Adjunct 2024 (Demo)</li>
+        <li><strong>Excellence Award</strong> (General Division) — 2022 AI·Virtual Convergence (XR) Service Developer Competition (Metaverse Developer Competition), Ministry of Science and ICT / NIPA. Team <em>Winter Is Coming</em>, project &ldquo;EverWhite&rdquo;</li>
+      </ul>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Service &amp; Activities</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Reviewer — SIGGRAPH Asia 2026 · ACM Multimedia (ACM MM) 2026</span>
+          <span class="entry-when">2026</span>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Member — KAIST Social Inclusion Committee</span>
+          <span class="entry-when">2025.06 – 2027.05</span>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <span class="entry-title">Member — KAIST Graduate Student Human Rights Center</span>
+          <span class="entry-when">2023.07 – Present</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Selected Artwork</h2>
+      <p style="font-size:14px;margin:0;">
+        <em>Tail Thief</em> series (interactive media / Oriental painting) and other works.
+      </p>
+    </section>
+
+    <section class="cv">
+      <h2 class="cv-section">Skills</h2>
+      <p class="tags"><strong>Focus</strong>&nbsp;&nbsp;XR / VR Programming · AI Agents (LLM-based, embodied) · Agentic / AI-assisted development<br><strong>Languages</strong>&nbsp;&nbsp;C# · C++ · C · Python<br><strong>Tools &amp; Frameworks</strong>&nbsp;&nbsp;Unity · Blender · PyTorch</p>
+    </section>
+  </main>
+</body>
+</html>
