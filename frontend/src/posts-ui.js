@@ -22,6 +22,7 @@ const artworkData = [
 ];
 
 const publicationData = [
+    { title: 'TranSpace: Progressive Anchoring for Metric-Consistent Scene Synthesis', venue: 'ACM MM 2026' },
     { title: 'A Unified Framework for Spatially-Aware Embodied Agents in XR', venue: 'IEEE VR 2026 XRMemory' },
     { title: 'Voronoi Rooms: Dynamic Visibility Modulation of Overlapping Spaces for Telepresence', venue: 'ACM TOG 2025' },
     { title: 'Situated Embodied XR Agents via Spatial Reasoning and Prompting', venue: 'ISMAR 2025' },
