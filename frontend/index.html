@@ -402,12 +402,12 @@
     }
 
     .pub-image {
-      width: 200px;
-      height: 130px;
+      width: 280px;
+      height: 140px;
       border-radius: 4px;
       background: #f5f5f5;
       flex-shrink: 0;
-      object-fit: contain;
+      object-fit: cover;
     }
 
     [data-theme="dark"] .pub-image {
@@ -467,6 +467,15 @@
       color: #999;
       border-color: #444;
     }
+
+    /* Field tints for pub-type labels */
+    .pub-type--graphics { color: #9a7b2d; border-color: #d6c391; }
+    .pub-type--xr { color: #6b5fa8; border-color: #c5bede; }
+    .pub-type--mm { color: #3d8a7a; border-color: #a8d0c6; }
+
+    [data-theme="dark"] .pub-type--graphics { color: #c9a84c; border-color: #5c4f26; }
+    [data-theme="dark"] .pub-type--xr { color: #a99ee0; border-color: #453e63; }
+    [data-theme="dark"] .pub-type--mm { color: #7cc4b2; border-color: #2f5349; }
 
     [data-theme="dark"] .pub-venue {
       color: #e87;
@@ -2559,7 +2568,7 @@
           <div class="pub-card">
             <img src="/images/transpace_teaser.png" class="pub-image" alt="Paper">
             <div class="pub-info">
-              <span class="pub-venue"><span class="pub-type">Conference</span>ACM Multimedia 2026</span>
+              <span class="pub-venue"><span class="pub-type pub-type--mm">Conference</span>ACM Multimedia 2026</span>
               <div class="pub-title">TranSpace: Progressive Anchoring for Metric-Consistent Scene Synthesis</div>
               <div class="pub-desc">Hyeshim Kim, Taehei Kim*, <strong>Jihun Shin*</strong>, Hyeonjin Kim, Sung-Hee Lee</div>
               <div class="pub-links">
@@ -2572,7 +2581,7 @@
           <div class="pub-card">
             <img src="/images/xrmemory_teaser.png" class="pub-image" alt="Paper">
             <div class="pub-info">
-              <span class="pub-venue"><span class="pub-type">Workshop</span>IEEE VR 2026 — XRMemory'26</span>
+              <span class="pub-venue"><span class="pub-type pub-type--xr">Workshop</span>IEEE VR 2026 — XRMemory'26</span>
               <div class="pub-title">A Unified Framework for Spatially-Aware Embodied Agents in XR</div>
               <div class="pub-desc"><strong>Jihun Shin</strong>, DongHwan Shin, Eunseong Lee, Hyeonjin Kim, Sung-Hee Lee</div>
               <div class="pub-links">
@@ -2588,7 +2597,7 @@
           <div class="pub-card">
             <img src="/images/voronoi_teaser.png" class="pub-image" alt="Paper">
             <div class="pub-info">
-              <span class="pub-venue"><span class="pub-type">Journal</span>ACM Transactions on Graphics (TOG), 2025</span>
+              <span class="pub-venue"><span class="pub-type pub-type--graphics">Journal</span>ACM Transactions on Graphics (TOG), 2025</span>
               <div class="pub-title">Voronoi Rooms: Dynamic Visibility Modulation of Overlapping Spaces for Telepresence</div>
               <div class="pub-desc">Taehei Kim, <strong>Jihun Shin</strong>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang,
                 Sung-Hee Lee</div>
@@ -2602,7 +2611,7 @@
           <div class="pub-card">
             <img src="/images/teaser_figure_v9.png" class="pub-image" alt="Paper">
             <div class="pub-info">
-              <span class="pub-venue"><span class="pub-type">Demo</span>IEEE ISMAR-Adjunct 2025</span>
+              <span class="pub-venue"><span class="pub-type pub-type--xr">Demo</span>IEEE ISMAR-Adjunct 2025</span>
               <div class="pub-title">Situated Embodied XR Agents via Spatial Reasoning and Prompting</div>
               <div class="pub-desc"><strong>Jihun Shin</strong>, Hyeonjin Kim,
                 Eunseong Lee, Donghwan Shin, Kwang Bin Lee, Taehei Kim,
@@ -2621,7 +2630,7 @@
           <div class="pub-card">
             <img src="/images/teaser.png" class="pub-image" alt="Paper">
             <div class="pub-info">
-              <span class="pub-venue"><span class="pub-type">Demo</span>IEEE ISMAR-Adjunct 2024 — Honorable Mention</span>
+              <span class="pub-venue"><span class="pub-type pub-type--xr">Demo</span>IEEE ISMAR-Adjunct 2024 — Honorable Mention</span>
               <div class="pub-title">Visibility Modulation of Aligned Spaces for Multi-User Telepresence</div>
               <div class="pub-desc">Taehei Kim, <strong>Jihun Shin</strong>, Hyeshim Kim, Hyuckjin Jang, Jiho Kang,
                 Sung-Hee Lee</div>
